@@ -1,0 +1,12 @@
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\bin\Debug\net6.0\RentACarShared.deps.json
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\bin\Debug\net6.0\RentACarShared.dll
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\bin\Debug\net6.0\RentACarShared.pdb
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.csproj.AssemblyReference.cache
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.GeneratedMSBuildEditorConfig.editorconfig
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.AssemblyInfoInputs.cache
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.AssemblyInfo.cs
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.csproj.CoreCompileInputs.cache
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.dll
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\refint\RentACarShared.dll
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\RentACarShared.pdb
+D:\Algebra\3. godina\_2. semestar\OICAR\ReanACar\RentACarShared\obj\Debug\net6.0\ref\RentACarShared.dll
