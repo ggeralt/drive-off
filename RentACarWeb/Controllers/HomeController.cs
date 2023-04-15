@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RentACarShared;
 using RentACarWeb.Models;
 using System.Diagnostics;
 
@@ -20,6 +22,7 @@ namespace RentACarWeb.Controllers
 
         public IActionResult Privacy()
         {
+            var token = HttpContext.Session.GetString("JWTtoken");
             return View();
         }
 

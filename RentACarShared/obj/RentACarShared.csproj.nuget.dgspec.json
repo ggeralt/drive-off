@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\ReanACar\\RentACarShared\\RentACarShared.csproj": {}
+    "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\Projekt\\drive-off\\RentACarShared\\RentACarShared.csproj": {}
   },
   "projects": {
-    "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\ReanACar\\RentACarShared\\RentACarShared.csproj": {
+    "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\Projekt\\drive-off\\RentACarShared\\RentACarShared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\ReanACar\\RentACarShared\\RentACarShared.csproj",
+        "projectUniqueName": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\Projekt\\drive-off\\RentACarShared\\RentACarShared.csproj",
         "projectName": "RentACarShared",
-        "projectPath": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\ReanACar\\RentACarShared\\RentACarShared.csproj",
+        "projectPath": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\Projekt\\drive-off\\RentACarShared\\RentACarShared.csproj",
         "packagesPath": "C:\\Users\\Luka\\.nuget\\packages\\",
-        "outputPath": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\ReanACar\\RentACarShared\\obj\\",
+        "outputPath": "D:\\Algebra\\3. godina\\_2. semestar\\OICAR\\Projekt\\drive-off\\RentACarShared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
