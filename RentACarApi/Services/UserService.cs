@@ -11,10 +11,10 @@ namespace RentACarApi.Services
 {
     public class UserService : IUserService
     {
-        private UserManager<IdentityUser> userManager; 
+        private UserManager<ApplicationUser> userManager; 
         private IConfiguration configuration;
         private IMailService mailService;
-        public UserService(UserManager<IdentityUser> userManager, IConfiguration configuration, IMailService mailService)
+        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService)
         {
             this.userManager = userManager;
             this.configuration = configuration;
@@ -136,7 +136,7 @@ namespace RentACarApi.Services
                 };
             }
 
-            var identityUser = new IdentityUser
+            var identityUser = new ApplicationUser
             {
                 Email = model.Email,
                 UserName = model.Username
