@@ -13,5 +13,6 @@
         public ApplicationUser ApplicationUser { get; set; }
         public List<Review> Reviews { get; set; }
         public List<Reservation> Reservations { get; set; }
+        public string Location { get; set; }
     }
 }
