@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RentACarShared
 {
-    public class UserManagerResponse
+    public class ManagerResponse
     {
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
