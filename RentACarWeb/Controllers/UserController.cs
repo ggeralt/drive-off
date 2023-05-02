@@ -25,7 +25,7 @@ namespace RentACarWeb.Controllers
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7218/api/Auth/Register", content);
             var respnseBody = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<UserManagerResponse>(respnseBody);
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
             return View(model);
         }
@@ -43,7 +43,7 @@ namespace RentACarWeb.Controllers
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7218/api/Auth/Login", content);
             var respnseBody = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<UserManagerResponse>(respnseBody);
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
             if (responseObject.IsSuccess)
             {
