@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(auth =>
 });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddRazorPages();
 

@@ -34,3 +34,15 @@ C:\Users\ana\Desktop\OICAR\drive-off\RentACarShared\obj\Debug\net6.0\RentACarSha
 C:\Users\ana\Desktop\OICAR\drive-off\RentACarShared\obj\Debug\net6.0\refint\RentACarShared.dll
 C:\Users\ana\Desktop\OICAR\drive-off\RentACarShared\obj\Debug\net6.0\RentACarShared.pdb
 C:\Users\ana\Desktop\OICAR\drive-off\RentACarShared\obj\Debug\net6.0\ref\RentACarShared.dll
+G:\Work\OICAR new\RentACarShared\bin\Debug\net6.0\RentACarShared.deps.json
+G:\Work\OICAR new\RentACarShared\bin\Debug\net6.0\RentACarShared.dll
+G:\Work\OICAR new\RentACarShared\bin\Debug\net6.0\RentACarShared.pdb
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.csproj.AssemblyReference.cache
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.GeneratedMSBuildEditorConfig.editorconfig
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.AssemblyInfoInputs.cache
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.AssemblyInfo.cs
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.csproj.CoreCompileInputs.cache
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.dll
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\refint\RentACarShared.dll
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\RentACarShared.pdb
+G:\Work\OICAR new\RentACarShared\obj\Debug\net6.0\ref\RentACarShared.dll
