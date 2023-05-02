@@ -21,12 +21,12 @@ namespace RentACarApi.Services
             this.mailService = mailService;
         }
 
-        public async Task<UserManagerResponse> ConfirmEmail(string userId, string token)
+        public async Task<ManagerResponse> ConfirmEmail(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "User not found",
                     IsSuccess = false
@@ -39,14 +39,14 @@ namespace RentACarApi.Services
 
             if (result.Succeeded)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "Email confirmed successfully",
                     IsSuccess = true
                 };
             }
 
-            return new UserManagerResponse
+            return new ManagerResponse
             {
                 Message = "Email could not be confirm",
                 IsSuccess = true,
@@ -54,13 +54,13 @@ namespace RentACarApi.Services
             };
         }
 
-        public async Task<UserManagerResponse> ForgetPassword(string email)
+        public async Task<ManagerResponse> ForgetPassword(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "No user with that email",
                     IsSuccess = false
@@ -75,21 +75,21 @@ namespace RentACarApi.Services
 
             await mailService.SendEmail(email, "Reset Password", $"<p>To reset password <a href='{url}'>CLICK HERE</a></p>");
 
-            return new UserManagerResponse
+            return new ManagerResponse
             {
                 Message = "Reset password  URL has been sent to the email successfully",
                 IsSuccess = true
             };
         }
 
-        public async Task<UserManagerResponse> LoginUser(LoginViewModel model)
+        public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             var result = await userManager.CheckPasswordAsync(user, model.Password);
 
             if (user == null || !result)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "Invalid user name of password",
                     IsSuccess = false,
@@ -114,14 +114,14 @@ namespace RentACarApi.Services
 
             string tokenAsString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new UserManagerResponse
+            return new ManagerResponse
             {
                 Message = tokenAsString,
                 IsSuccess = true
             };
         }
 
-        public async Task<UserManagerResponse> RegisterUser(RegisterViewModel model)
+        public async Task<ManagerResponse> RegisterUser(RegisterViewModel model)
         { 
             if (model == null)
             {
@@ -129,7 +129,7 @@ namespace RentACarApi.Services
             }
             else if (model.Password != model.ConfirmPassword)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "Confirm password doesn't match the password",
                     IsSuccess = false
@@ -154,14 +154,14 @@ namespace RentACarApi.Services
 
                 await mailService.SendEmail(identityUser.Email, "Confirm email", $"<p>Please confirm email by <a href='{url}'>CLICKING HERE</a></p>");
 
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "User created succesfully",
                     IsSuccess = true,
                 };
             }
 
-            return new UserManagerResponse
+            return new ManagerResponse
             {
                 Message = "User cannot be created",
                 IsSuccess = false,
@@ -169,12 +169,12 @@ namespace RentACarApi.Services
             }; 
         }
 
-        public async Task<UserManagerResponse> ResetPassword(ResetPasswordViewModel model)
+        public async Task<ManagerResponse> ResetPassword(ResetPasswordViewModel model)
         {
             var user = userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "No user with that email",
                     IsSuccess = false
@@ -182,7 +182,7 @@ namespace RentACarApi.Services
             }
             if (model.NewPassword != model.ConfirmPassword)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "Password doesn't match",
                     IsSuccess = false
@@ -196,13 +196,13 @@ namespace RentACarApi.Services
 
             if (result.Succeeded)
             {
-                return new UserManagerResponse
+                return new ManagerResponse
                 {
                     Message = "Password has been reset successfully",
                     IsSuccess = true
                 };
             }
-            return new UserManagerResponse
+            return new ManagerResponse
             {
                 Message = "Failed to reset password",
                 IsSuccess = false,
