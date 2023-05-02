@@ -4,33 +4,34 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
 
-<h4>LoginViewModel</h4>
+<h1 style="text-align:center">Login
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+    </svg>
+</h1>
+
 <hr />
-<div class="row">
+<div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
     <div class="col-md-4">
         <form asp-action="LoginUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+            <div class="form-group" style="padding-bottom:10px">
+                <label asp-for="Email" class="control-label" style="padding-bottom:10px"></label>
+                <input asp-for="Email" class="form-control"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+            <div class="form-group" style="padding-bottom:10px">
+                <label asp-for="Password" class="control-label" style="padding-bottom:10px"></label>
+                <input asp-for="Password" class="form-control"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-success" />
+                <input type="submit" value="Login" class="btn btn-outline-success" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
