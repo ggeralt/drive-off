@@ -5,10 +5,10 @@ namespace RentACarApi.Services
 {
     public interface IUserService
     {
-        Task<UserManagerResponse> RegisterUser(RegisterViewModel model);
-        Task<UserManagerResponse> LoginUser(LoginViewModel model);
-        Task<UserManagerResponse> ConfirmEmail(string userId, string token);
-        Task<UserManagerResponse> ForgetPassword(string email);
-        Task<UserManagerResponse> ResetPassword(ResetPasswordViewModel model);
+        Task<ManagerResponse> RegisterUser(RegisterViewModel model);
+        Task<ManagerResponse> LoginUser(LoginViewModel model);
+        Task<ManagerResponse> ConfirmEmail(string userId, string token);
+        Task<ManagerResponse> ForgetPassword(string email);
+        Task<ManagerResponse> ResetPassword(ResetPasswordViewModel model);
     }
 }
