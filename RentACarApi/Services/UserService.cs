@@ -54,6 +54,38 @@ namespace RentACarApi.Services
             };
         }
 
+        public async Task<ManagerResponse> DeleteAccount(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return new ManagerResponse
+                {
+                    Message = "User not found",
+                    IsSuccess = false
+                };
+            }
+
+            var result = await userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new ManagerResponse
+                {
+                    Message = "The account has been deleted",
+                    IsSuccess = true
+                };
+            }
+
+            return new ManagerResponse
+            {
+                Message = "User cannot be deleted",
+                IsSuccess = false,
+                Errors = result.Errors.Select(errors => errors.Description)
+            };
+        }
+
         public async Task<ManagerResponse> ForgetPassword(string email)
         {
             var user = await userManager.FindByEmailAsync(email);

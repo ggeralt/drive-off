@@ -106,5 +106,22 @@ namespace RentACarApi.Controllers
             }
             return BadRequest("Some property are not valid");
         }
+
+        [HttpDelete("DeleteAccount")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+            
+            var result = await userService.DeleteAccount(id);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

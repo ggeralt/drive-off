@@ -52,5 +52,26 @@ namespace RentACarWeb.Controllers
             }
             return RedirectToAction("Login");
         }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        public async Task<IActionResult> UserForgetPassword(string email)
+        {
+            var client = httpClientFactory.CreateClient();
+
+            //var jsonData = JsonConvert.SerializeObject(email);
+            //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"https://localhost:7218/api/Auth/ForgetPassword?email={email}", new StringContent(email));
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            if (!responseObject.IsSuccess)
+            {
+                return RedirectToAction("ForgetPassword");
+            }
+            return RedirectToAction("Login");
+        }
     }
 }
