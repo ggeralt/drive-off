@@ -140,7 +140,7 @@ namespace RentACarApi.Services
                 issuer: configuration["AuthSettings:Issuer"],
                 audience: configuration["AuthSettings:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
 
