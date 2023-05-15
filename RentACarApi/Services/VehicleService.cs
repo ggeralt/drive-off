@@ -43,6 +43,8 @@ namespace RentACarApi.Services
 
             Vehicle vehicleModel = mapper.Map<Vehicle>(model);
             vehicleModel.ApplicationUser = user;
+            List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
+            vehicleModel.Pictures = pictures;
 
             context.Vehicles.Add(vehicleModel);
 

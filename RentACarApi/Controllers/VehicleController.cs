@@ -34,8 +34,8 @@ namespace RentACarApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("AddVehicle"), Authorize]
-        public async Task<IActionResult> AddVehicle(string userId, [FromBody]VehicleViewModel model)
+        [HttpPost("AddVehicle")]
+        public async Task<IActionResult> AddVehicle(string userId, VehicleViewModel model)
         {
             if (ModelState.IsValid)
             {

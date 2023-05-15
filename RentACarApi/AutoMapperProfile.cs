@@ -9,6 +9,7 @@ namespace RentACarApi
         public AutoMapperProfile()
         {
             CreateMap<VehicleViewModel, Vehicle>();
+            CreateMap<PictureViewModel, Picture>();
         }
     }
 }
