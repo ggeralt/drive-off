@@ -10,5 +10,6 @@ namespace RentACarApi.Services
         Task<ManagerResponse> ConfirmEmail(string userId, string token);
         Task<ManagerResponse> ForgetPassword(string email);
         Task<ManagerResponse> ResetPassword(ResetPasswordViewModel model);
+        Task<ManagerResponse> DeleteAccount(string id);
     }
 }

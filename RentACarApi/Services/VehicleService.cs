@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Org.BouncyCastle.Crypto.Digests;
 using RentACarApi.Model;
 using RentACarShared;
@@ -9,14 +10,16 @@ namespace RentACarApi.Services
     {
         private ApplicationDbContext context;
         private UserManager<ApplicationUser> userManager;
+        private readonly IMapper mapper;
 
-        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             this.context = context;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
-        public async Task<ManagerResponse> CreateVehicleAsync(int userId, VehicleViewModel model)
+        public async Task<ManagerResponse> CreateVehicleAsync(string userId, VehicleViewModel model)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
 
@@ -38,19 +41,12 @@ namespace RentACarApi.Services
                 };
             }
 
-            context.Vehicles.Add(new Vehicle
-            {
-                Title = model.Title,
-                HasCertificate = model.HasCertificate,
-                Model = model.Model,
-                Brand = model.Brand,
-                Type = model.Type,
-                Description = model.Description,
-                ApplicationUser = user,
-                Location = model.Location,
-                Latitude = model.Latitude, 
-                Longitude = model.Longitude,
-            });
+            Vehicle vehicleModel = mapper.Map<Vehicle>(model);
+            vehicleModel.ApplicationUser = user;
+            List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
+            vehicleModel.Pictures = pictures;
+
+            context.Vehicles.Add(vehicleModel);
 
             var result = await context.SaveChangesAsync();
             if (result > 0)

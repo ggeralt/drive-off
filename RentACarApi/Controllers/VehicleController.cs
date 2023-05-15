@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Services;
 using RentACarShared;
 
@@ -34,7 +35,7 @@ namespace RentACarApi.Controllers
         }
 
         [HttpPost("AddVehicle")]
-        public async Task<IActionResult> AddVehicle(int userId, [FromBody]VehicleViewModel model)
+        public async Task<IActionResult> AddVehicle(string userId, VehicleViewModel model)
         {
             if (ModelState.IsValid)
             {

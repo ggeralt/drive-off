@@ -35,5 +35,7 @@ namespace RentACarShared
 
         [Required]
         public double Latitude { get; set; }
+
+        public List<PictureViewModel>? PictureViewModels { get; set; }
     }
 }
