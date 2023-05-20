@@ -9,5 +9,6 @@ namespace RentACarApi.Services
         Task<ManagerResponse> UpdateVehicleAsync(int vehicleId, VehicleViewModel model);
         Task<ManagerResponse> DeleteVehicleAsync(int vehicleId);
         Task<Vehicle> GetVehicleAsync(int vehicleId);
+        Task<List<Vehicle>> GetAllVehiclesAsync();
     }
 }

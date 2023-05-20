@@ -1,26 +1,25 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto.Digests;
 using RentACarApi.Model;
 using RentACarShared;
 
 namespace RentACarApi.Services
 {
-    public class VehicleService : IVehicleService
+    public class ReservationService : IReservationService
     {
         private ApplicationDbContext context;
         private UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
 
-        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public ReservationService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             this.context = context;
             this.userManager = userManager;
             this.mapper = mapper;
         }
 
-        public async Task<ManagerResponse> CreateVehicleAsync(string userId, VehicleViewModel model)
+        public async Task<ManagerResponse> CreateReservationAsync(string userId, int vehicleId, ReservationViewModel model)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
             if (user == null)
@@ -31,83 +30,8 @@ namespace RentACarApi.Services
                     IsSuccess = false
                 };
             }
-            else if (model == null)
-            {
-                return new ManagerResponse
-                {
-                    Message = "Vehicle model is null",
-                    IsSuccess = false
-                };
-            }
 
-            Vehicle vehicleModel = mapper.Map<Vehicle>(model);
-            vehicleModel.ApplicationUser = user;
-            List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
-            vehicleModel.Pictures = pictures;
-
-            context.Vehicles.Add(vehicleModel);
-
-            var result = await context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return new ManagerResponse
-                {
-                    Message = "New vehicle Created",
-                    IsSuccess = true
-                };
-            }
-            else
-            {
-                return new ManagerResponse
-                {
-                    Message = "Failed to create new vehicle",
-                    IsSuccess = false
-                };
-            }
-        }
-
-        public async Task<ManagerResponse> DeleteVehicleAsync(int vehicleId)
-        {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
-
-            if (vehicle == null)
-            {
-                return new ManagerResponse
-                {
-                    Message = "Failed to fiend vehicleId",
-                    IsSuccess = false
-                };
-            }
-            context.Vehicles.Remove(vehicle);
-
-            var result = await context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return new ManagerResponse
-                {
-                    Message = "Vehicle deleted",
-                    IsSuccess = true
-                };
-            }
-            else
-            {
-                return new ManagerResponse
-                {
-                    Message = "Failed to delete vehicle",
-                    IsSuccess = false
-                };
-            }
-        }
-
-        public async Task<Vehicle> GetVehicleAsync(int vehicleId)
-        {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
-            return vehicle;
-        }
-
-        public async Task<ManagerResponse> UpdateVehicleAsync(int vehicleId, VehicleViewModel model)
-        {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
+            var vehicle = await context.Vehicles.FindAsync(vehicleId.ToString());
             if (vehicle == null)
             {
                 return new ManagerResponse
@@ -116,7 +40,8 @@ namespace RentACarApi.Services
                     IsSuccess = false
                 };
             }
-            else if (model == null)
+            
+            if (model == null)
             {
                 return new ManagerResponse
                 {
@@ -125,15 +50,18 @@ namespace RentACarApi.Services
                 };
             }
 
-            vehicle = mapper.Map<Vehicle>(model);
+            Reservation reservationModel = mapper.Map<Reservation>(model);
+            reservationModel.applicationUser = user;
+            reservationModel.Vehicle = vehicle;
 
-            context.Vehicles.Update(vehicle);
+            context.Reservations.Add(reservationModel);
+
             var result = await context.SaveChangesAsync();
             if (result > 0)
             {
                 return new ManagerResponse
                 {
-                    Message = "Vehicle updated",
+                    Message = "New reservation Created",
                     IsSuccess = true
                 };
             }
@@ -141,16 +69,98 @@ namespace RentACarApi.Services
             {
                 return new ManagerResponse
                 {
-                    Message = "Failed to update vehicle",
+                    Message = "Failed to create new reservation",
                     IsSuccess = false
                 };
             }
         }
 
-        public async Task<List<Vehicle>> GetAllVehiclesAsync()
+        public async Task<ManagerResponse> DeleteReservationAsync(int reservationId)
         {
-            var vehicles = await context.Vehicles.ToListAsync();
-            return vehicles;
+            var reservation = await context.Reservations.FindAsync(reservationId);
+
+            if (reservation == null)
+            {
+                return new ManagerResponse
+                {
+                    Message = "Failed to fiend reservationId",
+                    IsSuccess = false
+                };
+            }
+            context.Reservations.Remove(reservation);
+            
+            var result = await context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return new ManagerResponse
+                {
+                    Message = "Reservation deleted",
+                    IsSuccess = true
+                };
+            }
+            else
+            {
+                return new ManagerResponse
+                {
+                    Message = "Failed to delete reservation",
+                    IsSuccess = false
+                };
+            }
+        }
+
+        public async Task<List<Reservation>> GetAllReservationsAsync()
+        {
+            var reservations = await context.Reservations.ToListAsync();
+            return reservations;
+        }
+
+        public async Task<Reservation> GetReservationAsync(int reservationId)
+        {
+            var reservation = await context.Reservations.FindAsync(reservationId);
+            return reservation;
+        }
+
+        public async Task<ManagerResponse> UpdateReservationAsync(int reservationId, ReservationViewModel model)
+        {
+            var reservation = await context.Reservations.FindAsync(reservationId);
+            if (reservation == null)
+            {
+                return new ManagerResponse
+                {
+                    Message = "Failed to find reservationId",
+                    IsSuccess = false
+                };
+            }
+            else if (model == null)
+            {
+                return new ManagerResponse
+                {
+                    Message = "Reservation model is null",
+                    IsSuccess = false
+                };
+            }
+
+            reservation = mapper.Map<Reservation>(model);
+
+            context.Reservations.Update(reservation);
+
+            var result = await context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return new ManagerResponse
+                {
+                    Message = "Reservation updated",
+                    IsSuccess = true
+                };
+            }
+            else
+            {
+                return new ManagerResponse
+                {
+                    Message = "Failed to update reservation",
+                    IsSuccess = false
+                };
+            }
         }
     }
 }
