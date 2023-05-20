@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RentACarApi.Model;
 using RentACarApi.Services;
 using RentACarShared;
 
@@ -7,26 +8,25 @@ namespace RentACarApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleController : Controller
+    public class ReservationController : ControllerBase
     {
-        private IVehicleService vehicleService;
+        private IReservationService reservationService;
 
-        public VehicleController(IVehicleService vehicleService)
+        ReservationController(IReservationService reservationService)
         {
-            this.vehicleService = vehicleService;
+            this.reservationService = reservationService;
         }
 
-        [HttpGet("{vehicleId}")]
-        public async Task<IActionResult> GetVehicle(int vehicleId) 
+        [HttpGet("{reservationId}")]
+        public async Task<IActionResult> GetReservation(int reservationId)
         {
-            var result = await vehicleService.GetVehicleAsync(vehicleId);
-
+            var result = await reservationService.GetReservationAsync(reservationId);
             if (result == null)
             {
                 return NotFound();
             }
 
-            if (result.Id == vehicleId)
+            if (result.Id == reservationId)
             {
                 return Ok(result);
             }
@@ -34,12 +34,12 @@ namespace RentACarApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("AddVehicle")]
-        public async Task<IActionResult> AddVehicle(string userId, VehicleViewModel model)
+        [HttpPost("AddReservation")]
+        public async Task<IActionResult> AddReservation(string userId, int vehicleId, ReservationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await vehicleService.CreateVehicleAsync(userId, model);
+                var result = await reservationService.CreateReservationAsync(userId, vehicleId, model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -53,29 +53,29 @@ namespace RentACarApi.Controllers
             return BadRequest("Some properties are not valid");
         }
 
-        [HttpPost("UpdateVehicle")]
-        public async Task<IActionResult> UpdateVehicle(int vehicleId, [FromBody] VehicleViewModel model)
+        [HttpPost("UpdateReservation")]
+        public async Task<IActionResult> UpdateReservation(int reservationId, ReservationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await vehicleService.UpdateVehicleAsync(vehicleId, model);
-                if (result.IsSuccess)
+                var result = await reservationService.UpdateReservationAsync(reservationId, model);
+                        if (result.IsSuccess)
                 {
                     return Ok(result);
                 }
                 else
                 {
                     return BadRequest(result);
-                }
+                } 
             }
 
             return BadRequest("Some properties are not valid");
         }
 
-        [HttpDelete("DeleteVehicle")]
-        public async Task<IActionResult> DeleteVehicle(int vehicleId)
+        [HttpDelete("DeleteReservation")]
+        public async Task<IActionResult> DeleteReservation(int reservationId)
         {
-            var result = await vehicleService.DeleteVehicleAsync(vehicleId);
+            var result = await reservationService.DeleteReservationAsync(reservationId);
             if (result.IsSuccess)
             {
                 return Ok(result);
@@ -86,11 +86,10 @@ namespace RentACarApi.Controllers
             }
         }
 
-        [HttpGet("GetAllVehicles")]
-        public async Task<IActionResult> GetAllVehicles()
+        [HttpGet("GetAllReservations")]
+        public async Task<IActionResult> GetAllReservations()
         {
-            var result = await vehicleService.GetAllVehiclesAsync();
-
+            var result = await reservationService.GetAllReservationsAsync();
             if (result == null)
             {
                 return NotFound();
