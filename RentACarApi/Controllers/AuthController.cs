@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Model;
 using RentACarApi.Services;
 using RentACarShared;
+using System.Security.Claims;
 
 namespace RentACarApi.Controllers
 {
@@ -20,12 +21,12 @@ namespace RentACarApi.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
-        { 
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        {
             if (ModelState.IsValid)
             {
                 var result = await userService.RegisterUser(model);
-                
+
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -38,7 +39,7 @@ namespace RentACarApi.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -91,12 +92,12 @@ namespace RentACarApi.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromForm]ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var result = await userService.ResetPassword(model);
-                
+
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -114,7 +115,7 @@ namespace RentACarApi.Controllers
             {
                 return NotFound();
             }
-            
+
             var result = await userService.DeleteAccount(id);
 
             if (result.IsSuccess)
@@ -122,6 +123,13 @@ namespace RentACarApi.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        [HttpGet("GetUserId"), Authorize]
+        public async Task<IActionResult> GetUserId()
+        {
+            var userId = userService.GetUserId();
+            return Ok(userId);
         }
     }
 }

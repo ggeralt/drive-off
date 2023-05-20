@@ -24,7 +24,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
-}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+}).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -59,6 +59,7 @@ builder.Services.AddAuthentication(auth =>
 });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddRazorPages();
@@ -85,5 +86,41 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    
+    var roles = new[] { "Admin", "User" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    string username = "admin";
+    string email = "admin@admin.com";
+    string password = "String1#";
+
+    if (await userManager.FindByEmailAsync(email) == null)
+    {
+        var identityUser = new ApplicationUser
+        {
+            UserName = username,
+            Email = email,
+        };
+        await userManager.CreateAsync(identityUser, password);
+
+        await userManager.AddToRoleAsync(identityUser, "Admin");
+    }
+}
 
 app.Run();
