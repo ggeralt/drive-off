@@ -9,8 +9,6 @@ namespace RentACarShared
 {
     public class ReservationViewModel
     {
-        [Required]
-        public int Id { get; set; }
 
         [Required]
         public DateTime DateFrom { get; set; }

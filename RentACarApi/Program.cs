@@ -62,6 +62,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddTransient<IMailService, MailService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

@@ -21,7 +21,7 @@ namespace RentACarApi.Services
 
         public async Task<ManagerResponse> CreateReservationAsync(string userId, int vehicleId, ReservationViewModel model)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
+            var user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return new ManagerResponse
@@ -31,7 +31,7 @@ namespace RentACarApi.Services
                 };
             }
 
-            var vehicle = await context.Vehicles.FindAsync(vehicleId.ToString());
+            var vehicle = await context.Vehicles.FindAsync(vehicleId);
             if (vehicle == null)
             {
                 return new ManagerResponse
