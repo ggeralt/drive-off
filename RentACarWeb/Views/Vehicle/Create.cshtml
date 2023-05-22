@@ -3,71 +3,130 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1 style="text-align:center">Create new vehicle</h1>
-<hr />
-<div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
-    <div class="col-md-4">
-        <p>Please enter all vehicle data.</p>
-        @using (Html.BeginForm("Create", "Vehicle", FormMethod.Post, new {enctype = "multipart/form-data"}))
-        {  
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Title" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-check form-switch" style="padding-bottom:10px">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" asp-for="HasCertificate">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Has certificate</label>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Model" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Brand" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Type" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Description" class="control-label" style="padding-bottom:10px"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Location" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Longitude" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Longitude" class="form-control" />
-                <span asp-validation-for="Longitude" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Latitude" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Latitude" class="form-control" />
-                <span asp-validation-for="Latitude" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-bottom:10px">
-                <label class="control-label" style="padding-bottom:10px">Picture</label>
-                <br/>
-                <input class="form-control" type="file" id="Picture"  accept="image/*" multiple name="files">
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-warning" />
-            </div>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <style>
+        #map {
+            width: 90vh;
+            height: 50vh;
+            margin-bottom: 10px;
         }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center">Create new vehicle</h1>
+    <hr />
+    <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
+        <div class="col-md-4">
+            <p>Please enter all vehicle data.</p>
+            @using (Html.BeginForm("Create", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Title" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-check form-switch" style="padding-bottom:10px">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" asp-for="HasCertificate">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Has certificate</label>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Model" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Brand" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Brand" class="form-control" />
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Type" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Type" class="form-control" />
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Description" class="control-label" style="padding-bottom:10px"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Location" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Latitude" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Latitude" id="latitudeId" class="form-control" />
+                    <span asp-validation-for="Latitude" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label asp-for="Longitude" class="control-label" style="padding-bottom:10px"></label>
+                    <input asp-for="Longitude" id="longitudeId" class="form-control" />
+                    <span asp-validation-for="Longitude" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="padding-bottom:10px">
+                    <label class="control-label" style="padding-bottom:10px">Picture</label>
+                    <br />
+                    <input class="form-control" type="file" id="Picture" accept="image/*" multiple name="files">
+                </div>
+                <div id="map"></div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-outline-warning" />
+                </div>
+            }
+        </div>
     </div>
-</div>
+</body>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+<script>
+
+    var map = L.map('map').setView([45.815399, 15.966568], 13);
+
+    var osm = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+	    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    osm.addTo(map);
+    var geocoder = L.Control.geocoder({
+    defaultMarkGeocode: false,
+    collapsed: false
+  })
+  .on('markgeocode', function(e) {
+    var bbox = e.geocode.bbox;
+    var poly = L.polygon([
+      bbox.getSouthEast(),
+      bbox.getNorthEast(),
+      bbox.getNorthWest(),
+      bbox.getSouthWest()
+    ]).addTo(map);
+    map.fitBounds(poly.getBounds());
+  })
+  .addTo(map);
+
+    var marker = null;
+    map.on("click", function(e) {
+        if (marker !== null) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+
+        var latitudeField = document.querySelector("#latitudeId");
+        var longitudeField = document.querySelector("#longitudeId");
+
+        var curPos = marker.getLatLng();
+
+        latitudeField.value = curPos.lat;
+        longitudeField.value = curPos.lng;
+    })
+    
+</script>

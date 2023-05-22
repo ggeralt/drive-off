@@ -72,7 +72,7 @@ namespace RentACarApi.Controllers
             return BadRequest("Some properties are not valid");
         }
 
-        [HttpPost("DeleteVehicle")]
+        [HttpDelete("DeleteVehicle")]
         public async Task<IActionResult> DeleteVehicle(int vehicleId)
         {
             var result = await vehicleService.DeleteVehicleAsync(vehicleId);
@@ -83,6 +83,21 @@ namespace RentACarApi.Controllers
             else
             {
                 return BadRequest(result);
+            }
+        }
+
+        [HttpGet("GetAllVehicles")]
+        public async Task<IActionResult> GetAllVehicles()
+        {
+            var result = await vehicleService.GetAllVehiclesAsync();
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result);
             }
         }
     }

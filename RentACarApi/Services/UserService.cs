@@ -11,14 +11,16 @@ namespace RentACarApi.Services
 {
     public class UserService : IUserService
     {
-        private UserManager<ApplicationUser> userManager; 
-        private IConfiguration configuration;
-        private IMailService mailService;
-        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService)
+        private readonly UserManager<ApplicationUser> userManager; 
+        private readonly IConfiguration configuration;
+        private readonly IMailService mailService;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService, IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
             this.configuration = configuration;
             this.mailService = mailService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ManagerResponse> ConfirmEmail(string userId, string token)
@@ -114,6 +116,16 @@ namespace RentACarApi.Services
             };
         }
 
+        public string GetUserId()
+        {
+            if (httpContextAccessor.HttpContext != null)
+            {
+                string result = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return result;
+            }
+            return string.Empty;
+        }
+
         public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
@@ -178,6 +190,8 @@ namespace RentACarApi.Services
 
             if (result.Succeeded)
             {
+                await userManager.AddToRoleAsync(identityUser, "User");
+
                 var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(identityUser);
                 var emailTokenEncoded = Encoding.UTF8.GetBytes(emailToken);
                 var validEmailToken = WebEncoders.Base64UrlEncode(emailTokenEncoded);

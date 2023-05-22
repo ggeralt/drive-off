@@ -10,6 +10,7 @@ namespace RentACarApi
         {
             CreateMap<VehicleViewModel, Vehicle>();
             CreateMap<PictureViewModel, Picture>();
+            CreateMap<ReservationViewModel, Reservation>();
         }
     }
 }

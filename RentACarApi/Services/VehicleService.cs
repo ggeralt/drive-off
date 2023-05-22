@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto.Digests;
 using RentACarApi.Model;
 using RentACarShared;
@@ -22,8 +23,6 @@ namespace RentACarApi.Services
         public async Task<ManagerResponse> CreateVehicleAsync(string userId, VehicleViewModel model)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
-
-
             if (user == null)
             {
                 return new ManagerResponse
@@ -126,15 +125,7 @@ namespace RentACarApi.Services
                 };
             }
 
-            vehicle.Title = model.Title;
-            vehicle.HasCertificate = model.HasCertificate;
-            vehicle.Model = model.Model;
-            vehicle.Brand = model.Brand;
-            vehicle.Type = model.Type;
-            vehicle.Description = model.Description;
-            vehicle.Location = model.Location;
-            vehicle.Latitude = model.Latitude;
-            vehicle.Longitude = model.Longitude;
+            vehicle = mapper.Map<Vehicle>(model);
 
             context.Vehicles.Update(vehicle);
             var result = await context.SaveChangesAsync();
@@ -154,6 +145,12 @@ namespace RentACarApi.Services
                     IsSuccess = false
                 };
             }
+        }
+
+        public async Task<List<Vehicle>> GetAllVehiclesAsync()
+        {
+            var vehicles = await context.Vehicles.ToListAsync();
+            return vehicles;
         }
     }
 }
