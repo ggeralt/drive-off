@@ -14,26 +14,23 @@
 <hr />
 <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
     <div class="col-md-4">
+        <p>Sign up and start using DriveOff.</p>
         <form asp-action="RegisterDetails">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Email" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Email"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Username" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Username" class="form-control" />
+                <input asp-for="Username" class="form-control" placeholder="Username"/>
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="Password" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="Password" class="form-control" type="password"/>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Password"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding-bottom:10px">
-                <label asp-for="ConfirmPassword" class="control-label" style="padding-bottom:10px"></label>
-                <input asp-for="ConfirmPassword" class="form-control" type="password"/>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm Password"/>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
