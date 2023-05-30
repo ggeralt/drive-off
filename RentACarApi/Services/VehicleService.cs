@@ -102,6 +102,11 @@ namespace RentACarApi.Services
         public async Task<Vehicle> GetVehicleAsync(int vehicleId)
         {
             var vehicle = await context.Vehicles.FindAsync(vehicleId);
+            var pictures = context.Pictures.Where(x => x.Vehicle.Id == vehicle.Id);
+            if (pictures.Count() > 1)
+            {
+                vehicle.Pictures = pictures.ToList();
+            }
             return vehicle;
         }
 
@@ -150,6 +155,14 @@ namespace RentACarApi.Services
         public async Task<List<Vehicle>> GetAllVehiclesAsync()
         {
             var vehicles = await context.Vehicles.ToListAsync();
+            foreach (var vehicle in vehicles)
+            {
+                var pictures = context.Pictures.Where(x => x.Vehicle.Id == vehicle.Id);
+                if (pictures.Count() > 1)
+                {
+                    vehicle.Pictures = pictures.ToList();
+                }   
+            }
             return vehicles;
         }
     }
