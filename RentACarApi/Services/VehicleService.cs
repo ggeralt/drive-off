@@ -99,20 +99,20 @@ namespace RentACarApi.Services
             }
         }
 
-        public async Task<Vehicle> GetVehicleAsync(int vehicleId)
+        public async Task<VehicleViewModel> GetVehicleAsync(int vehicleId)
         {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
-            var pictures = context.Pictures.Where(x => x.Vehicle.Id == vehicle.Id);
-            if (pictures.Count() > 1)
-            {
-                vehicle.Pictures = pictures.ToList();
-            }
-            return vehicle;
+            var vehicle = await context.Vehicles.Include(v => v.Pictures).Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == vehicleId);
+
+            VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
+            List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
+            vehicleViewModel.PictureViewModels = pictures;
+
+            return vehicleViewModel;
         }
 
         public async Task<ManagerResponse> UpdateVehicleAsync(int vehicleId, VehicleViewModel model)
         {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
+            var vehicle = await context.Vehicles.Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == vehicleId);
             if (vehicle == null)
             {
                 return new ManagerResponse
@@ -130,9 +130,22 @@ namespace RentACarApi.Services
                 };
             }
 
-            vehicle = mapper.Map<Vehicle>(model);
+            //var vehicleModel = mapper.Map<Vehicle>(model);
+            //vehicleModel.ApplicationUser = vehicle.ApplicationUser;
+            //vehicleModel.Id = vehicle.Id;
 
-            context.Vehicles.Update(vehicle);
+            vehicle.Title = model.Title;
+            vehicle.HasCertificate = model.HasCertificate;
+            vehicle.Model = model.Model;
+            vehicle.Brand = model.Brand;
+            vehicle.Type = model.Type;
+            vehicle.Description = model.Description;
+            vehicle.Location = model.Location;
+            vehicle.Longitude = model.Longitude;
+            vehicle.Latitude = model.Latitude;
+            List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
+            vehicle.Pictures = pictures;
+
             var result = await context.SaveChangesAsync();
             if (result > 0)
             {
@@ -152,18 +165,21 @@ namespace RentACarApi.Services
             }
         }
 
-        public async Task<List<Vehicle>> GetAllVehiclesAsync()
+        public async Task<List<VehicleViewModel>> GetAllVehiclesAsync()
         {
-            var vehicles = await context.Vehicles.ToListAsync();
+            List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
+
+            var vehicles = await context.Vehicles.Include(v => v.Pictures).ToListAsync();
+
             foreach (var vehicle in vehicles)
             {
-                var pictures = context.Pictures.Where(x => x.Vehicle.Id == vehicle.Id);
-                if (pictures.Count() > 1)
-                {
-                    vehicle.Pictures = pictures.ToList();
-                }   
+                VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
+                List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
+                vehicleViewModel.PictureViewModels = pictures;
+                vehicleViewModels.Add(vehicleViewModel);
             }
-            return vehicles;
+
+            return vehicleViewModels;
         }
     }
 }

@@ -16,15 +16,39 @@ namespace RentACarWeb.Controllers
         }
 
         // GET: VehicleController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync("https://localhost:7218/api/Vehicle/GetAllVehicles");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var vehicleViewModels = JsonConvert.DeserializeObject<List<VehicleViewModel>>(json);
+
+                return View(vehicleViewModels);
+            }
+            return NotFound();
         }
 
         // GET: VehicleController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int vehicleId)
         {
-            return View();
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7218/api/Vehicle/{vehicleId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var vehicleVewModel = JsonConvert.DeserializeObject<VehicleViewModel>(json);
+
+                if (vehicleVewModel != null)
+                {
+                    return View(vehicleVewModel);
+                }
+            }
+            return NotFound();
+
         }
 
         // GET: VehicleController/Create
@@ -60,6 +84,62 @@ namespace RentACarWeb.Controllers
             return View();
         }
 
+        // GET: VehicleController/Edit/5
+        public async Task<IActionResult> Edit(int vehicleId)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7218/api/Vehicle/{vehicleId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var vehicleVewModel = JsonConvert.DeserializeObject<VehicleViewModel>(json);
+
+                if (vehicleVewModel != null)
+                {
+                    return View(vehicleVewModel);
+                }
+            }
+            return NotFound();
+        }
+
+        // POST: VehicleController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(VehicleViewModel vehicleViewModel)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: VehicleController/Delete/5
+        public ActionResult Delete(int id)
+        {
+
+            return View();
+        }
+
+        // POST: VehicleController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         private async void AddPictures(VehicleViewModel vehicleViewModel, List<IFormFile> files)
         {
             foreach (var file in files)
@@ -80,48 +160,6 @@ namespace RentACarWeb.Controllers
                         }
                     }
                 }
-            }
-        }
-
-        // GET: VehicleController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: VehicleController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: VehicleController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: VehicleController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }
