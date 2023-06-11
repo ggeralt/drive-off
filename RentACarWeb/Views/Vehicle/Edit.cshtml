@@ -24,6 +24,9 @@
             @using (Html.BeginForm("Edit", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <input asp-for="Id" class="form-control" type="hidden"/>
+
                     <div class="form-group" style="padding-bottom:10px">
                         <label asp-for="Title" class="control-label" style="padding-bottom:10px"></label>
                         <input asp-for="Title" class="form-control" />
@@ -73,6 +76,17 @@
                         <br />
                         <input class="form-control" type="file" id="Picture" accept="image/*" multiple name="files">
                     </div>
+                    @if (Model.PictureViewModels.Count > 0)
+                    {
+                        foreach (var image in Model.PictureViewModels)
+                        {
+                            string base64 = Convert.ToBase64String(image.ImageData);
+                            string imgsrc = "data:image/jpeg;base64," + base64;
+                            <img src="@imgsrc" width="300" height="200" alt="Image cap">
+                            @Html.ActionLink("Delete", "DeletePicture", "Vehicle", new { pictureId = image.Id}, new { @class="btn btn-primary" })
+                            //@Html.AjaxActionLink("Delete", "DeletePicture", "Vehicle", new { pictureId = image.Id}, new AjaxOptions { HttpMethod = "Get" }, new { @class = "btn btn-primary" })
+                    }
+                    }
                     <div id="map"></div>
                     <div class="form-group">
                         <input type="submit" value="Edit" class="btn btn-outline-warning" />
@@ -90,7 +104,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-                        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script>

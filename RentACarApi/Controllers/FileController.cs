@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Services;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RentACarApi.Controllers
 {
@@ -15,22 +16,17 @@ namespace RentACarApi.Controllers
             this.fileService = fileService;
         }
 
-        [HttpGet("{vehicleId}")]
-        public async Task<IActionResult> GetVehicle(int vehicleId)
+        // DELETE api/<FileController>/5
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int pictureId)
         {
-            var result = await fileService.GetPictureAsync(vehicleId);
+            var result = await fileService.DeletePictureAsync(pictureId);
 
             if (result == null)
             {
                 return NotFound();
             }
-
-            if (result.Id == vehicleId)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
+            return Ok(result);
         }
     }
 }

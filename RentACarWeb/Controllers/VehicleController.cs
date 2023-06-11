@@ -31,6 +31,22 @@ namespace RentACarWeb.Controllers
             return NotFound();
         }
 
+        public async Task<IActionResult> IndexSearch(string search)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7218/api/Vehicle/GetSearchedVehicles?searchValue={search}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var vehicleViewModels = JsonConvert.DeserializeObject<List<VehicleViewModel>>(json);
+
+                return View("Index", vehicleViewModels);
+            }
+
+            return NotFound();
+        }
+
         // GET: VehicleController/Details/5
         public async Task<ActionResult> Details(int vehicleId)
         {
@@ -106,16 +122,26 @@ namespace RentACarWeb.Controllers
         // POST: VehicleController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(VehicleViewModel vehicleViewModel)
+        public async Task<IActionResult> Edit(VehicleViewModel vehicleViewModel, List<IFormFile> files)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
+            var userId = await userResponse.Content.ReadAsStringAsync();
+
+            vehicleViewModel.PictureViewModels = new List<PictureViewModel>();
+            AddPictures(vehicleViewModel, files);
+
+            var jsonData = JsonConvert.SerializeObject(vehicleViewModel);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"https://localhost:7218/api/Vehicle/UpdateVehicle", content);
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            return RedirectToAction("Index");
         }
 
         // GET: VehicleController/Delete/5
@@ -138,6 +164,18 @@ namespace RentACarWeb.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<IActionResult> DeletePicture(int pictureId)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.DeleteAsync($"https://localhost:7218/api/File/Delete?pictureId={pictureId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            return NotFound();
         }
 
         private async void AddPictures(VehicleViewModel vehicleViewModel, List<IFormFile> files)

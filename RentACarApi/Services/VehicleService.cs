@@ -110,9 +110,9 @@ namespace RentACarApi.Services
             return vehicleViewModel;
         }
 
-        public async Task<ManagerResponse> UpdateVehicleAsync(int vehicleId, VehicleViewModel model)
+        public async Task<ManagerResponse> UpdateVehicleAsync(VehicleViewModel model)
         {
-            var vehicle = await context.Vehicles.Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == vehicleId);
+            var vehicle = await context.Vehicles.Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == model.Id);
             if (vehicle == null)
             {
                 return new ManagerResponse
@@ -170,6 +170,24 @@ namespace RentACarApi.Services
             List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
 
             var vehicles = await context.Vehicles.Include(v => v.Pictures).ToListAsync();
+
+            foreach (var vehicle in vehicles)
+            {
+                VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
+                List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
+                vehicleViewModel.PictureViewModels = pictures;
+                vehicleViewModels.Add(vehicleViewModel);
+            }
+
+            return vehicleViewModels;
+        }
+        
+        public async Task<List<VehicleViewModel>> GetSearchedVehiclesAsync(string searchValue)
+        {
+            List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
+
+            var vehicles = await context.Vehicles.Include(v => v.Pictures).Where(
+                v => v.Title.Contains(searchValue) || v.Description.Contains(searchValue) || v.Type.Contains(searchValue) || v.Model.Contains(searchValue)).ToListAsync();
 
             foreach (var vehicle in vehicles)
             {

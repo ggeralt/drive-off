@@ -1,9 +1,10 @@
 ﻿using RentACarApi.Model;
+using RentACarShared;
 
 namespace RentACarApi.Services
 {
     public interface IFileService
     {
-        Task<Picture> GetPictureAsync(int pictureId);
+        Task<ManagerResponse> DeletePictureAsync(int pictureId);
     }
 }

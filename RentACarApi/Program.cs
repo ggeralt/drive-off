@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(auth =>
 });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddTransient<IMailService, MailService>();

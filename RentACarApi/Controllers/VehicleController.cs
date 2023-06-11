@@ -54,11 +54,11 @@ namespace RentACarApi.Controllers
         }
 
         [HttpPost("UpdateVehicle")]
-        public async Task<IActionResult> UpdateVehicle(int vehicleId, [FromBody] VehicleViewModel model)
+        public async Task<IActionResult> UpdateVehicle(VehicleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await vehicleService.UpdateVehicleAsync(vehicleId, model);
+                var result = await vehicleService.UpdateVehicleAsync(model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -90,6 +90,20 @@ namespace RentACarApi.Controllers
         public async Task<IActionResult> GetAllVehicles()
         {
             var result = await vehicleService.GetAllVehiclesAsync();
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+        [HttpGet("GetSearchedVehicles")]
+        public async Task<IActionResult> GetSearchedVehicles(string searchValue)
+        {
+            var result = await vehicleService.GetSearchedVehiclesAsync(searchValue);
 
             if (result == null)
             {
