@@ -48,7 +48,7 @@ namespace RentACarWeb.Controllers
         }
 
         // GET: VehicleController/Details/5
-        public async Task<ActionResult> Details(int vehicleId)
+        public async Task<IActionResult> Details(int vehicleId)
         {
             var client = httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:7218/api/Vehicle/{vehicleId}");

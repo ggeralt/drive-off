@@ -9,8 +9,8 @@ namespace RentACarApi.Services
 {
     public class VehicleService : IVehicleService
     {
-        private ApplicationDbContext context;
-        private UserManager<ApplicationUser> userManager;
+        private readonly ApplicationDbContext context;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
 
         public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
