@@ -7,4 +7,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RentACarApi\RentACarApi.csproj" />
+    <ProjectReference Include="..\RentACarWeb\RentACarWeb.csproj" />
+  </ItemGroup>
+
 </Project>
