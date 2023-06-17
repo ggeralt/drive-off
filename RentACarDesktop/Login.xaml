@@ -30,7 +30,7 @@
                          Height="28" 
                          VerticalContentAlignment="Center" 
                          Margin="0,5,0,0"/>
-            <Button x:Name="btnLogin" FontWeight="Bold" FontSize="24" BorderThickness="2" Content="LOG IN" Cursor="Hand" Margin="0,50,0,0" Click="btnLogin_Click"/>
+            <Button x:Name="btnLogin" FontWeight="Bold" FontSize="24" BorderThickness="2" Content="LOG IN" Cursor="Hand" Margin="0,50,0,0" Click="btnLogin_ClickAsync"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
                 <TextBlock Text="Forgot Password?"
                            FontSize="12"
@@ -41,6 +41,12 @@
                         Cursor="Hand"
                         Margin="8,0,0,0"/>
             </StackPanel>
+            <Label x:Name="txtStatus"
+                   Width="220" 
+                   Margin="0,8,0,0"
+                   FontSize="14" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>
