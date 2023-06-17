@@ -200,5 +200,30 @@ namespace RentACarWeb.Controllers
                 }
             }
         }
+        public ActionResult Booking(int  vehicleId, string message)
+        {
+            ViewBag.vehicleId = vehicleId;
+            ViewBag.message = message;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Booking(ReservationViewModel reservationViewModel)
+        {
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
+            var userId = await userResponse.Content.ReadAsStringAsync();
+
+            var jsonData = JsonConvert.SerializeObject(reservationViewModel);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"https://localhost:7218/api/Reservation1/AddReservation?userId={userId}", content);
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            return RedirectToAction("Booking", new { vehicleId = reservationViewModel.VehicleId, message = responseObject.Message });
+        }
     }
 }

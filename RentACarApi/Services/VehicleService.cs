@@ -101,7 +101,12 @@ namespace RentACarApi.Services
 
         public async Task<VehicleViewModel> GetVehicleAsync(int vehicleId)
         {
-            var vehicle = await context.Vehicles.Include(v => v.Pictures).Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == vehicleId);
+            var vehicle = await context.Vehicles.Include(v => v.Pictures).Include(v => v.ApplicationUser).SingleOrDefaultAsync(v => v.Id == vehicleId && v.HasCertificate == true);
+
+            if (vehicle == null)
+            {
+                return null;
+            }
 
             VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
             List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
@@ -169,7 +174,12 @@ namespace RentACarApi.Services
         {
             List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
 
-            var vehicles = await context.Vehicles.Include(v => v.Pictures).ToListAsync();
+            var vehicles = await context.Vehicles.Include(v => v.Pictures).Where(v => v.HasCertificate == true).ToListAsync();
+
+            if (vehicles == null)
+            {
+                return null;
+            }
 
             foreach (var vehicle in vehicles)
             {

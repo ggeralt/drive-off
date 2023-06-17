@@ -19,8 +19,9 @@ namespace RentACarApi.Services
             this.mapper = mapper;
         }
 
-        public async Task<ManagerResponse> CreateReservationAsync(string userId, int vehicleId, ReservationViewModel model)
+        public async Task<ManagerResponse> CreateReservationAsync(string userId, ReservationViewModel model)
         {
+            
             var user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -31,7 +32,7 @@ namespace RentACarApi.Services
                 };
             }
 
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
+            var vehicle = await context.Vehicles.FindAsync(model.VehicleId);
             if (vehicle == null)
             {
                 return new ManagerResponse
@@ -46,6 +47,16 @@ namespace RentACarApi.Services
                 return new ManagerResponse
                 {
                     Message = "Vehicle model is null",
+                    IsSuccess = false
+                };
+            }
+            var reservations = await context.Reservations.Where(d => d.DateFrom <= model.DateTo && model.DateFrom <= d.DateTo && d.Vehicle.Id == model.VehicleId).ToListAsync();
+            
+            if (reservations.Count > 0)
+            {
+                return new ManagerResponse
+                {
+                    Message = "That date is already booked",
                     IsSuccess = false
                 };
             }

@@ -15,5 +15,7 @@ namespace RentACarShared
 
         [Required]
         public DateTime DateTo { get; set; }
+        [Required]
+        public int VehicleId { get; set; }
     }
 }

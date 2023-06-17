@@ -39,7 +39,7 @@ namespace RentACarApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await reservationService.CreateReservationAsync(userId, vehicleId, model);
+                var result = await reservationService.CreateReservationAsync(userId, model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);

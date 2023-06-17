@@ -52,18 +52,22 @@ namespace RentACarApi.Controllers
 
         // POST api/<Reservation1Controller>
         [HttpPost("AddReservation")]
-        public async Task<IActionResult> AddReservation(string userId, int vehicleId, ReservationViewModel model)
+        public async Task<IActionResult> AddReservation(string userId, ReservationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await reservationService.CreateReservationAsync(userId, vehicleId, model);
+                var result = await reservationService.CreateReservationAsync(userId, model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);
                 }
-                else
+                else if (result.Errors != null)
                 {
                     return BadRequest(result);
+                }
+                else if (result.Errors == null && !result.IsSuccess)
+                {
+                    return Conflict(result);
                 }
             }
 

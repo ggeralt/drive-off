@@ -1,0 +1,55 @@
+﻿@model RentACarShared.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Booking";
+}
+
+<h1>Booking</h1>
+
+<h4>ReservationViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Booking">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DateFrom" class="control-label"></label>
+                <input asp-for="DateFrom" value="@DateTime.Now.ToShortDateString()" id="datepickerFrom" type="text" class="form-control" />
+                <span asp-validation-for="DateFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTo" class="control-label"></label>
+                <input asp-for="DateTo" value="@DateTime.Now.AddDays(1).ToShortDateString()" id="datepickerTo" type="text" class="form-control" />
+                <span asp-validation-for="DateTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="VehicleId" value="@ViewBag.vehicleId" type="hidden" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (ViewBag.message != null)
+{
+    <div class="alert alert-secondary" role="alert">
+        @ViewBag.message
+    </div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepickerFrom").datepicker({ minDate: 0 });
+            $("#datepickerTo").datepicker({ minDate: 1 });
+        });
+    </script>
+}
