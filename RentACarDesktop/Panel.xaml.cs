@@ -26,7 +26,7 @@ namespace RentACarDesktop
             {
                 var json = await response.Content.ReadAsStringAsync();
                 List<VehicleViewModel>? vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(json);
-                lbVehicles.Items.Add(vehicles);
+                lbVehicles.ItemsSource = vehicles;
             }
         }
     }

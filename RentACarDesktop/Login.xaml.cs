@@ -22,7 +22,7 @@ namespace RentACarDesktop
             loginViewModel.Email = txtUsername.Text.ToString();
             loginViewModel.Password = txtPassword.Password.ToString();
 
-            if (loginViewModel.Email.Equals("admin@test.com") && loginViewModel.Password.Equals("Admin123!"))
+            if (loginViewModel.Email.Equals("admin@admin.com") && loginViewModel.Password.Equals("String1#"))
             {
                 return loginViewModel;
             }

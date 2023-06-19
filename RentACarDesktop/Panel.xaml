@@ -7,13 +7,24 @@
         mc:Ignorable="d"
         Title="Panel" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="lbVehicles" Grid.Row="1" BorderThickness="0" 
+        <!--<ListBox x:Name="lbVehicles" Grid.Row="1" BorderThickness="0" 
             ItemsSource="{Binding}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
+        <ListView x:Name="lbVehicles">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Title" Width="70" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Model" Width="70" DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn Header="Brand" Width="70" DisplayMemberBinding="{Binding Brand}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
