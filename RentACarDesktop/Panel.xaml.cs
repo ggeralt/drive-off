@@ -1,16 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RentACarShared;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RentACarDesktop
 {
@@ -22,6 +14,20 @@ namespace RentACarDesktop
         public Panel()
         {
             InitializeComponent();
+            GetVehicles();
+        }
+
+        private async void GetVehicles()
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllNonConfirmedVehicles");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                List<VehicleViewModel>? vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(json);
+                lbVehicles.Items.Add(vehicles);
+            }
         }
     }
 }

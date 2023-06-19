@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Panel" Height="450" Width="800">
     <Grid>
-        
+        <ListBox x:Name="lbVehicles" Grid.Row="1" BorderThickness="0" 
+            ItemsSource="{Binding}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
