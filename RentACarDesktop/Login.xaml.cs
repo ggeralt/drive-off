@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using RentACarShared;
 using System.Net.Http;
 using System.Text;
@@ -22,12 +23,7 @@ namespace RentACarDesktop
             loginViewModel.Email = txtUsername.Text.ToString();
             loginViewModel.Password = txtPassword.Password.ToString();
 
-            if (loginViewModel.Email.Equals("admin@admin.com") && loginViewModel.Password.Equals("String1#"))
-            {
-                return loginViewModel;
-            }
-
-            return null;
+            return loginViewModel;
         }
 
         private async void btnLogin_ClickAsync(object sender, RoutedEventArgs e)
@@ -39,9 +35,9 @@ namespace RentACarDesktop
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                Panel panel = new Panel();
+                MainPanel mainPanel = new();
                 this.Hide();
-                panel.Show();
+                mainPanel.Show();
             }
             else
             {

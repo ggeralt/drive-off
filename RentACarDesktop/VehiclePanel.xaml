@@ -1,0 +1,23 @@
+﻿<Window x:Class="RentACarDesktop.VehiclePanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RentACarDesktop"
+        mc:Ignorable="d"
+        Title="Panel" Height="450" Width="800">
+    <Grid>
+        <ListView x:Name="lbVehicles" FontSize="16" MouseDoubleClick="MouseDoubleClickToUpdateSelectedVehicle" ToolTip="Double click to assign certificate">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Model" Width="100" DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn Header="Brand" Width="100" DisplayMemberBinding="{Binding Brand}"/>
+                        <GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding Description}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
