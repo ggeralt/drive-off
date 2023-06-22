@@ -53,6 +53,12 @@ namespace RentACarWeb.Controllers
             return RedirectToAction("Login");
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
         public IActionResult ForgetPassword()
         {
             return View();

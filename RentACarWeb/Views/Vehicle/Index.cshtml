@@ -39,7 +39,7 @@
                     }
                     <div class="card-body">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                        <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Price) €/Day</p>
                         @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-primary"})
                     </div>
                 </div>

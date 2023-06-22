@@ -5,6 +5,7 @@ using RentACarApi.Model;
 using RentACarApi.Services;
 using RentACarShared;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace RentACarApi.Controllers
 {
@@ -14,10 +15,12 @@ namespace RentACarApi.Controllers
     {
         private IUserService userService;
         private IConfiguration configuration;
-        public AuthController(IUserService userService, IConfiguration configuration)
+        private SignInManager<ApplicationUser> signInManager;
+        public AuthController(IUserService userService, IConfiguration configuration, SignInManager<ApplicationUser> signInManager)
         {
             this.userService = userService;
             this.configuration = configuration;
+            this.signInManager = signInManager;
         }
 
         [HttpPost("Register")]

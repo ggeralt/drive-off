@@ -82,7 +82,7 @@ namespace RentACarWeb.Controllers
             var token = HttpContext.Session.GetString("JWTtoken");
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
+            
             var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
             var userId = await userResponse.Content.ReadAsStringAsync();
 
