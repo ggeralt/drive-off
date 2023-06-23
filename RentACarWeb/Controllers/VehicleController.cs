@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RentACarShared;
+using RentACarWeb.Models;
 using System.Text;
 
 namespace RentACarWeb.Controllers
@@ -145,13 +146,23 @@ namespace RentACarWeb.Controllers
         }
 
         // GET: VehicleController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int vehicleId)
         {
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
 
-            return View();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var response = await client.DeleteAsync($"https://localhost:7218/api/Vehicle/DeleteVehicle?vehicleId={vehicleId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            return NotFound();
         }
 
-        // POST: VehicleController/Delete/5
+        //POST: VehicleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
@@ -224,6 +235,30 @@ namespace RentACarWeb.Controllers
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
             return RedirectToAction("Booking", new { vehicleId = reservationViewModel.VehicleId, message = responseObject.Message });
+        }
+        public async Task<IActionResult> MyAccount()
+        {
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var response = await client.GetAsync("https://localhost:7218/api/Auth/GetVehicleUser");
+            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUser");
+
+            if (response.IsSuccessStatusCode && userResponse.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var vehicleViewModels = JsonConvert.DeserializeObject<List<VehicleViewModel>>(json);
+
+                var userJson = await userResponse.Content.ReadAsStringAsync();
+                var userViewModel = JsonConvert.DeserializeObject<UserViewModel>(userJson);
+
+                ViewBag.User = userViewModel;
+
+                return View(vehicleViewModels);
+            }
+            return NotFound();
         }
     }
 }

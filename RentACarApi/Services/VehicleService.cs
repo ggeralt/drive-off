@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto.Digests;
 using RentACarApi.Model;
 using RentACarShared;
+using System.Security.Claims;
 
 namespace RentACarApi.Services
 {
@@ -11,13 +12,15 @@ namespace RentACarApi.Services
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
 
-        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
             this.userManager = userManager;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ManagerResponse> CreateVehicleAsync(string userId, VehicleViewModel model)
@@ -68,35 +71,36 @@ namespace RentACarApi.Services
 
         public async Task<ManagerResponse> DeleteVehicleAsync(int vehicleId)
         {
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
+            if (httpContextAccessor.HttpContext != null)
+            {
+                var vehicle = await context.Vehicles.FindAsync(vehicleId);
 
-            if (vehicle == null)
-            {
-                return new ManagerResponse
+                if (vehicle == null)
                 {
-                    Message = "Failed to fiend vehicleId",
-                    IsSuccess = false
-                };
-            }
-            context.Vehicles.Remove(vehicle);
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to fiend vehicleId",
+                        IsSuccess = false
+                    };
+                }
+                context.Vehicles.Remove(vehicle);
 
-            var result = await context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return new ManagerResponse
+                var result = await context.SaveChangesAsync();
+                if (result > 0)
                 {
-                    Message = "Vehicle deleted",
-                    IsSuccess = true
-                };
+                    return new ManagerResponse
+                    {
+                        Message = "Vehicle deleted",
+                        IsSuccess = true
+                    };
+                }
             }
-            else
+            return new ManagerResponse
             {
-                return new ManagerResponse
-                {
-                    Message = "Failed to delete vehicle",
-                    IsSuccess = false
-                };
-            }
+                Message = "Failed to delete vehicle",
+                IsSuccess = false
+            };
+            
         }
 
         public async Task<VehicleViewModel> GetVehicleAsync(int vehicleId)
@@ -191,7 +195,35 @@ namespace RentACarApi.Services
 
             return vehicleViewModels;
         }
-        
+
+        public async Task<List<VehicleViewModel>> GetUserVehiclesAsync()
+        {
+            if (httpContextAccessor.HttpContext != null)
+            {
+                string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
+
+                var vehicles = await context.Vehicles.Include(v => v.Pictures).Where(v => v.ApplicationUser.Id == userId).ToListAsync();
+
+                if (vehicles == null)
+                {
+                    return null;
+                }
+
+                foreach (var vehicle in vehicles)
+                {
+                    VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
+                    List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
+                    vehicleViewModel.PictureViewModels = pictures;
+                    vehicleViewModels.Add(vehicleViewModel);
+                }
+
+                return vehicleViewModels;
+            }
+            return null;
+        }
+
         public async Task<List<VehicleViewModel>> GetSearchedVehiclesAsync(string searchValue)
         {
             List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();

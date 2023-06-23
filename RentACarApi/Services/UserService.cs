@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RentACarApi.Model;
 using RentACarShared;
@@ -15,12 +17,17 @@ namespace RentACarApi.Services
         private readonly IConfiguration configuration;
         private readonly IMailService mailService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService, IHttpContextAccessor httpContextAccessor)
+        private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
+        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService, 
+            IHttpContextAccessor httpContextAccessor, ApplicationDbContext context, IMapper mapper)
         {
             this.userManager = userManager;
             this.configuration = configuration;
             this.mailService = mailService;
             this.httpContextAccessor = httpContextAccessor;
+            this.context = context;
+            this.mapper = mapper;
         }
 
         public async Task<ManagerResponse> ConfirmEmail(string userId, string token)
@@ -125,7 +132,6 @@ namespace RentACarApi.Services
             }
             return string.Empty;
         }
-
         public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);

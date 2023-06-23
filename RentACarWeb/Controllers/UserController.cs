@@ -8,6 +8,7 @@ namespace RentACarWeb.Controllers
     public class UserController : Controller
     {
         private readonly IHttpClientFactory httpClientFactory;
+
         public UserController(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
@@ -78,6 +79,22 @@ namespace RentACarWeb.Controllers
                 return RedirectToAction("ForgetPassword");
             }
             return RedirectToAction("Login");
+        }
+        public async Task<IActionResult> DeleteAccount(string userId)
+        {
+            var client = httpClientFactory.CreateClient();
+
+            //var jsonData = JsonConvert.SerializeObject(email);
+            //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await client.DeleteAsync($"https://localhost:7218/api/Auth/DeleteAccount?id={userId}");
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            if (responseObject.IsSuccess)
+            {
+                return RedirectToAction("Register");
+            }
+            return BadRequest();
         }
     }
 }

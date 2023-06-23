@@ -6,6 +6,8 @@ using RentACarApi.Services;
 using RentACarShared;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace RentACarApi.Controllers
 {
@@ -16,11 +18,18 @@ namespace RentACarApi.Controllers
         private IUserService userService;
         private IConfiguration configuration;
         private SignInManager<ApplicationUser> signInManager;
-        public AuthController(IUserService userService, IConfiguration configuration, SignInManager<ApplicationUser> signInManager)
+        private readonly ApplicationDbContext context;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IMapper mapper;
+        public AuthController(IUserService userService, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, 
+            ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             this.userService = userService;
             this.configuration = configuration;
             this.signInManager = signInManager;
+            this.context = context;
+            this.httpContextAccessor = httpContextAccessor;
+            this.mapper = mapper;
         }
 
         [HttpPost("Register")]
@@ -133,6 +142,42 @@ namespace RentACarApi.Controllers
         {
             var userId = userService.GetUserId();
             return Ok(userId);
+        }
+        [HttpGet("GetVehicleUser"), Authorize]
+        public async Task<IActionResult> GetVehicleUser()
+        {
+            string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //var user = context.Users.Include(v => v.Vehicles).SingleOrDefault(u => u.Id == userId);
+
+            var vehicles = context.Vehicles.Include(v => v.Pictures).Where(v => v.ApplicationUser.Id == userId).ToList();
+            List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
+
+            foreach (var vehicle in vehicles)
+            {
+                VehicleViewModel vehicleViewModel = mapper.Map<VehicleViewModel>(vehicle);
+                List<PictureViewModel> pictures = mapper.Map<List<PictureViewModel>>(vehicle.Pictures);
+                vehicleViewModel.PictureViewModels = pictures;
+                vehicleViewModels.Add(vehicleViewModel);
+            }
+
+            return Ok(vehicleViewModels);
+        }
+        [HttpGet("GetUser"), Authorize]
+        public async Task<IActionResult> GetUser()
+        {
+            string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var user = context.Users.SingleOrDefault(u => u.Id == userId);
+
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email
+            };
+
+            return Ok(userViewModel);
         }
     }
 }
