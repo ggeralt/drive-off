@@ -83,20 +83,15 @@ namespace RentACarWeb.Controllers
             var token = HttpContext.Session.GetString("JWTtoken");
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            
-            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
-            var userId = await userResponse.Content.ReadAsStringAsync();
 
             vehicleViewModel.PictureViewModels = new List<PictureViewModel>();
             AddPictures(vehicleViewModel, files);
 
             var jsonData = JsonConvert.SerializeObject(vehicleViewModel);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://localhost:7218/api/Vehicle/AddVehicle?userId={userId}", content);
+            var response = await client.PostAsync($"https://localhost:7218/api/Vehicle/AddVehicle", content);
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
-
-            //var response = client.PostAsJsonAsync<VehicleViewModel>("https://localhost:7218/api/Vehicle/AddVehicle?userId=469c085b-f2c5-4ff0-9772-d9d0e830bc72", vehicleViewModel);
 
             return View();
         }
@@ -130,9 +125,6 @@ namespace RentACarWeb.Controllers
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
-            var userId = await userResponse.Content.ReadAsStringAsync();
-
             vehicleViewModel.PictureViewModels = new List<PictureViewModel>();
             AddPictures(vehicleViewModel, files);
 
@@ -142,7 +134,7 @@ namespace RentACarWeb.Controllers
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("MyAccount");
         }
 
         // GET: VehicleController/Delete/5
@@ -180,6 +172,10 @@ namespace RentACarWeb.Controllers
         public async Task<IActionResult> DeletePicture(int pictureId)
         {
             var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
             var response = await client.DeleteAsync($"https://localhost:7218/api/File/Delete?pictureId={pictureId}");
 
             if (response.IsSuccessStatusCode)
@@ -225,14 +221,16 @@ namespace RentACarWeb.Controllers
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-            var userResponse = await client.GetAsync("https://localhost:7218/api/Auth/GetUserId");
-            var userId = await userResponse.Content.ReadAsStringAsync();
-
             var jsonData = JsonConvert.SerializeObject(reservationViewModel);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"https://localhost:7218/api/Reservation1/AddReservation?userId={userId}", content);
+            var response = await client.PostAsync($"https://localhost:7218/api/Reservation1/AddReservation", content);
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            if (response.ReasonPhrase == "Unauthorized")
+            {
+                return RedirectToAction("Booking", new { vehicleId = reservationViewModel.VehicleId, message = "Unauthorized user, login and try again" });
+            }
 
             return RedirectToAction("Booking", new { vehicleId = reservationViewModel.VehicleId, message = responseObject.Message });
         }
@@ -257,6 +255,39 @@ namespace RentACarWeb.Controllers
                 ViewBag.User = userViewModel;
 
                 return View(vehicleViewModels);
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> Reservation()
+        {
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var response = await client.GetAsync("https://localhost:7218/api/Reservation1/GetAllReservations");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var reservationViewModels = JsonConvert.DeserializeObject<List<ReservationView>>(json);
+
+                return View(reservationViewModels);
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> DeleteReservation(int reservationId)
+        {
+            var client = httpClientFactory.CreateClient();
+            var token = HttpContext.Session.GetString("JWTtoken");
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var response = await client.DeleteAsync($"https://localhost:7218/api/Reservation1/DeleteReservation?reservationId={reservationId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             return NotFound();
         }

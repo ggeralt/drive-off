@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Services;
 using RentACarShared;
 
@@ -18,7 +19,7 @@ namespace RentACarApi.Controllers
         }
 
         // GET: api/<Reservation1Controller>
-        [HttpGet("GetAllReservations")]
+        [HttpGet("GetAllReservations"), Authorize]
         public async Task<IActionResult> GetAllReservations()
         {
             var result = await reservationService.GetAllReservationsAsync();
@@ -51,12 +52,12 @@ namespace RentACarApi.Controllers
         }
 
         // POST api/<Reservation1Controller>
-        [HttpPost("AddReservation")]
-        public async Task<IActionResult> AddReservation(string userId, ReservationViewModel model)
+        [HttpPost("AddReservation"), Authorize]
+        public async Task<IActionResult> AddReservation(ReservationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await reservationService.CreateReservationAsync(userId, model);
+                var result = await reservationService.CreateReservationAsync(model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -74,7 +75,7 @@ namespace RentACarApi.Controllers
             return BadRequest("Some properties are not valid");
         }
 
-        // PUT api/<Reservation1Controller>/5
+        // POST api/<Reservation1Controller>/5
         [HttpPost("UpdateReservation")]
         public async Task<IActionResult> UpdateReservation(int reservationId, ReservationViewModel model)
         {
@@ -95,7 +96,7 @@ namespace RentACarApi.Controllers
         }
 
         // DELETE api/<Reservation1Controller>/5
-        [HttpDelete("DeleteReservation")]
+        [HttpDelete("DeleteReservation"), Authorize]
         public async Task<IActionResult> DeleteReservation(int reservationId)
         {
             var result = await reservationService.DeleteReservationAsync(reservationId);

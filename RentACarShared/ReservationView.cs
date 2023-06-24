@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace RentACarShared
 {
-    public class ReservationViewModel
+    public class ReservationView
     {
+        public int Id { get; set; }
         [Required]
         public DateTime DateFrom { get; set; }
 
@@ -16,5 +17,6 @@ namespace RentACarShared
         public DateTime DateTo { get; set; }
         [Required]
         public int VehicleId { get; set; }
+        public string Vehicle { get; set; }
     }
 }

@@ -34,12 +34,12 @@ namespace RentACarApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("AddVehicle")]
-        public async Task<IActionResult> AddVehicle(string userId, VehicleViewModel model)
+        [HttpPost("AddVehicle"), Authorize]
+        public async Task<IActionResult> AddVehicle(VehicleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await vehicleService.CreateVehicleAsync(userId, model);
+                var result = await vehicleService.CreateVehicleAsync(model);
                 if (result.IsSuccess)
                 {
                     return Ok(result);
@@ -53,7 +53,7 @@ namespace RentACarApi.Controllers
             return BadRequest("Some properties are not valid");
         }
 
-        [HttpPost("UpdateVehicle")]
+        [HttpPost("UpdateVehicle"), Authorize]
         public async Task<IActionResult> UpdateVehicle(VehicleViewModel model)
         {
             if (ModelState.IsValid)

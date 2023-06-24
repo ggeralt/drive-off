@@ -23,50 +23,52 @@ namespace RentACarApi.Services
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ManagerResponse> CreateVehicleAsync(string userId, VehicleViewModel model)
+        public async Task<ManagerResponse> CreateVehicleAsync(VehicleViewModel model)
         {
-            var user = await userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
+            if (httpContextAccessor.HttpContext != null)
             {
-                return new ManagerResponse
-                {
-                    Message = "Failed to find userId",
-                    IsSuccess = false
-                };
-            }
-            else if (model == null)
-            {
-                return new ManagerResponse
-                {
-                    Message = "Vehicle model is null",
-                    IsSuccess = false
-                };
-            }
+                string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Vehicle vehicleModel = mapper.Map<Vehicle>(model);
-            vehicleModel.ApplicationUser = user;
-            List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
-            vehicleModel.Pictures = pictures;
-
-            context.Vehicles.Add(vehicleModel);
-
-            var result = await context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return new ManagerResponse
+                var user = await userManager.FindByIdAsync(userId.ToString());
+                if (user == null)
                 {
-                    Message = "New vehicle Created",
-                    IsSuccess = true
-                };
-            }
-            else
-            {
-                return new ManagerResponse
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to find userId",
+                        IsSuccess = false
+                    };
+                }
+                else if (model == null)
                 {
-                    Message = "Failed to create new vehicle",
-                    IsSuccess = false
-                };
+                    return new ManagerResponse
+                    {
+                        Message = "Vehicle model is null",
+                        IsSuccess = false
+                    };
+                }
+
+                Vehicle vehicleModel = mapper.Map<Vehicle>(model);
+                vehicleModel.ApplicationUser = user;
+                List<Picture> pictures = mapper.Map<List<Picture>>(model.PictureViewModels);
+                vehicleModel.Pictures = pictures;
+
+                context.Vehicles.Add(vehicleModel);
+
+                var result = await context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "New vehicle Created",
+                        IsSuccess = true
+                    };
+                }
             }
+            return new ManagerResponse
+            {
+                Message = "Failed to create new vehicle",
+                IsSuccess = false
+            };
         }
 
         public async Task<ManagerResponse> DeleteVehicleAsync(int vehicleId)
@@ -138,10 +140,6 @@ namespace RentACarApi.Services
                     IsSuccess = false
                 };
             }
-
-            //var vehicleModel = mapper.Map<Vehicle>(model);
-            //vehicleModel.ApplicationUser = vehicle.ApplicationUser;
-            //vehicleModel.Id = vehicle.Id;
 
             vehicle.Title = model.Title;
             vehicle.HasCertificate = model.HasCertificate;

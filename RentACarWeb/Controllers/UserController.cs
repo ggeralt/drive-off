@@ -28,7 +28,7 @@ namespace RentACarWeb.Controllers
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
-            return View(model);
+            return RedirectToAction("Index", "Vehicle");
         }
 
         public IActionResult Login()
@@ -38,6 +38,7 @@ namespace RentACarWeb.Controllers
 
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
+            HttpContext.Session.Clear();
             var client = httpClientFactory.CreateClient();
 
             var jsonData = JsonConvert.SerializeObject(model);
@@ -49,7 +50,7 @@ namespace RentACarWeb.Controllers
             if (responseObject.IsSuccess)
             {
                 HttpContext.Session.SetString("JWTtoken", responseObject.Message);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Vehicle"); 
             }
             return RedirectToAction("Login");
         }
@@ -68,8 +69,6 @@ namespace RentACarWeb.Controllers
         {
             var client = httpClientFactory.CreateClient();
 
-            //var jsonData = JsonConvert.SerializeObject(email);
-            //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"https://localhost:7218/api/Auth/ForgetPassword?email={email}", new StringContent(email));
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
@@ -84,8 +83,6 @@ namespace RentACarWeb.Controllers
         {
             var client = httpClientFactory.CreateClient();
 
-            //var jsonData = JsonConvert.SerializeObject(email);
-            //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.DeleteAsync($"https://localhost:7218/api/Auth/DeleteAccount?id={userId}");
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);

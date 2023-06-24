@@ -123,15 +123,6 @@ namespace RentACarApi.Services
             };
         }
 
-        public string GetUserId()
-        {
-            if (httpContextAccessor.HttpContext != null)
-            {
-                string result = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return result;
-            }
-            return string.Empty;
-        }
         public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);

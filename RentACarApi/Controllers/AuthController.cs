@@ -137,18 +137,10 @@ namespace RentACarApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("GetUserId"), Authorize]
-        public async Task<IActionResult> GetUserId()
-        {
-            var userId = userService.GetUserId();
-            return Ok(userId);
-        }
         [HttpGet("GetVehicleUser"), Authorize]
         public async Task<IActionResult> GetVehicleUser()
         {
-            string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            //var user = context.Users.Include(v => v.Vehicles).SingleOrDefault(u => u.Id == userId);
+            string userId = GetUserId();
 
             var vehicles = context.Vehicles.Include(v => v.Pictures).Where(v => v.ApplicationUser.Id == userId).ToList();
             List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
@@ -163,10 +155,11 @@ namespace RentACarApi.Controllers
 
             return Ok(vehicleViewModels);
         }
+
         [HttpGet("GetUser"), Authorize]
         public async Task<IActionResult> GetUser()
         {
-            string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = GetUserId();
 
             var user = context.Users.SingleOrDefault(u => u.Id == userId);
 
@@ -178,6 +171,10 @@ namespace RentACarApi.Controllers
             };
 
             return Ok(userViewModel);
+        }
+        private string GetUserId()
+        {
+            return httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

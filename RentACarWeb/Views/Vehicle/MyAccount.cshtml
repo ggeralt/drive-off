@@ -43,6 +43,7 @@
                         <p class="card-text">@Html.DisplayFor(modelItem => item.Price) €/Day</p>
                         @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-primary"})
                         @Html.ActionLink("Delete", "Delete", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-danger"})
+                        @Html.ActionLink("Edit", "Edit", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-dark"})
                     </div>
                 </div>
             </div>

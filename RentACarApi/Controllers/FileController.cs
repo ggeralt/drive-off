@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,7 +18,7 @@ namespace RentACarApi.Controllers
         }
 
         // DELETE api/<FileController>/5
-        [HttpDelete("Delete")]
+        [HttpDelete("Delete"), Authorize]
         public async Task<IActionResult> Delete(int pictureId)
         {
             var result = await fileService.DeletePictureAsync(pictureId);
