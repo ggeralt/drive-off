@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentACarApi.Services;
 
@@ -15,7 +16,7 @@ namespace RentACarApi.Controllers
             this.adminService = adminService;
         }
 
-        [HttpPut("Confirm")]
+        [HttpPut("Confirm"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> Confirm(int vehicleId)
         {
             var result = await adminService.VerifiedVehicleAsync(vehicleId);
@@ -27,7 +28,7 @@ namespace RentACarApi.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetAllNonConfirmedVehicles")]
+        [HttpGet("GetAllNonConfirmedVehicles"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllNonConfirmedVehicles()
         {
             var result = await adminService.GetAllNonConfirmedVehiclesAsync();
@@ -40,7 +41,7 @@ namespace RentACarApi.Controllers
             return Ok(result);
         }
         
-        [HttpGet("GetNonConfirmedVehicle")]
+        [HttpGet("GetNonConfirmedVehicle"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetNonConfirmedVehicle(int vehicleId)
         {
             var result = await adminService.GetNonConfirmedVehicleAsync(vehicleId);
@@ -51,6 +52,37 @@ namespace RentACarApi.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpDelete("DeleteAccount"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            var result = await adminService.DeleteAccount(id);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpDelete("DeleteVehicle"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteVehicle(int vehicleId)
+        {
+            var result = await adminService.DeleteVehicleAsync(vehicleId);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
         }
     }
 }

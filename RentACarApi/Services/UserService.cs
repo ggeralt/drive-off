@@ -137,12 +137,33 @@ namespace RentACarApi.Services
                 };
             }
 
-            var claims = new[]
+            var userRole = await userManager.GetRolesAsync(user);
+            if (userRole.Count > 0)
             {
-                new Claim("Email", model.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
-            };
+                string role = userRole.First();
+                var claims = new[]
+                {
+                    new Claim("Email", model.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Role, role)
+                };
 
+                return GenerateToken(claims);
+            }
+            else
+            {
+                var claims = new[]
+                {
+                    new Claim("Email", model.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
+                };
+
+                return GenerateToken(claims);
+            }
+        }
+
+        private ManagerResponse GenerateToken(Claim[] claims)
+        {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AuthSettings:Key"]));
 
             var token = new JwtSecurityToken(
