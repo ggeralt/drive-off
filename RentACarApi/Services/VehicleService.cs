@@ -15,7 +15,8 @@ namespace RentACarApi.Services
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
 
-        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public VehicleService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper, 
+            IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
             this.userManager = userManager;

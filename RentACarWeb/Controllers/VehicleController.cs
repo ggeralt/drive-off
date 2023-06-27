@@ -81,7 +81,7 @@ namespace RentACarWeb.Controllers
         {
             var client = httpClientFactory.CreateClient();
             var token = HttpContext.Session.GetString("JWTtoken");
-
+            
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             vehicleViewModel.PictureViewModels = new List<PictureViewModel>();

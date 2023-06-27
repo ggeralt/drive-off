@@ -22,6 +22,9 @@ namespace RentACarDesktop
         private async void GetVehicles()
         {
             var client = new HttpClient();
+            string token = Application.Current.Properties["token"].ToString();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
             var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllNonConfirmedVehicles");
 
             if (response.IsSuccessStatusCode)
