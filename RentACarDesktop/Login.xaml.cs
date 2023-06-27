@@ -1,5 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RentACarShared;
 using System.Net.Http;
 using System.Text;

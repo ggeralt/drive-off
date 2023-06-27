@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RentACarApi.Model;
 using RentACarShared;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,9 +10,9 @@ namespace RentACarDesktop
     /// <summary>
     /// Interaction logic for Panel.xaml
     /// </summary>
-    public partial class VehiclePanel : Window
+    public partial class VehiclesPanel : Window
     {
-        public VehiclePanel()
+        public VehiclesPanel()
         {
             InitializeComponent();
             GetVehicles();
@@ -22,10 +21,14 @@ namespace RentACarDesktop
         private async void GetVehicles()
         {
             var client = new HttpClient();
+<<<<<<< HEAD:RentACarDesktop/VehiclePanel.xaml.cs
             string token = Application.Current.Properties["token"].ToString();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllNonConfirmedVehicles");
+=======
+            var response = await client.GetAsync("https://localhost:7218/api/Vehicle/GetAllVehicles");
+>>>>>>> ea3cb5cdb19554488bf40712fb7d59ddf160707b:RentACarDesktop/VehiclesPanel.xaml.cs
 
             if (response.IsSuccessStatusCode)
             {
@@ -35,7 +38,7 @@ namespace RentACarDesktop
             }
         }
 
-        private async void MouseDoubleClickToUpdateSelectedVehicle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        /*private async void MouseDoubleClickToUpdateSelectedVehicle(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             VehicleViewModel vehicle = (VehicleViewModel)lbVehicles.SelectedItem;
             vehicle.HasCertificate = true;
@@ -46,6 +49,14 @@ namespace RentACarDesktop
             var response = await client.PostAsync("https://localhost:7218/api/Vehicle/UpdateVehicle", content);
 
             GetVehicles();
+        }*/
+
+        private void MouseDoubleClickToUpdateSelectedVehicle(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            VehicleViewModel selectedVehicle = (VehicleViewModel)lbVehicles.SelectedItem;
+            EditVehiclePanel editVehiclePanel = new(selectedVehicle);
+            this.Hide();
+            editVehiclePanel.Show();
         }
     }
 }
