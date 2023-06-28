@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="Panel" Height="450" Width="450">
+        Title="RentACar Admin - Vehicles" WindowStartupLocation="CenterScreen" Height="450" Width="600">
     <Grid>
         <ListView x:Name="lbVehicles" FontSize="16" MouseDoubleClick="MouseDoubleClickToUpdateSelectedVehicle" ToolTip="Double click to assign certificate">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Title}"/>
-                        <GridViewColumn Header="Model" Width="100" DisplayMemberBinding="{Binding Model}"/>
-                        <GridViewColumn Header="Brand" Width="100" DisplayMemberBinding="{Binding Brand}"/>
-                        <GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding Description}"/>
+                        <GridViewColumn Header="Title" Width="110" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn Header="Brand" Width="110" DisplayMemberBinding="{Binding Brand}"/>
+                        <GridViewColumn Header="Description" Width="110" DisplayMemberBinding="{Binding Description}"/>
+                        <GridViewColumn Header="HasCertificate" Width="110" DisplayMemberBinding="{Binding HasCertificate}"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

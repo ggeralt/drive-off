@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin Login" Height="500" Width="500">
+        Title="RentACar Admin - Login" WindowStartupLocation="CenterScreen" Height="500" Width="500">
     <Grid>
         <StackPanel Width="220" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
-            <TextBlock Text="Username" 
+            <TextBlock Text="Email" 
                        FontSize="24" 
                        FontWeight="Medium" 
                        Margin="0,35,0,0"/>
-            <TextBox x:Name="txtUsername" 
+            <TextBox x:Name="txtEmail" 
                      FontSize="20" 
                      FontWeight="Medium" 
                      BorderThickness="2" 

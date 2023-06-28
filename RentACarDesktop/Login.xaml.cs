@@ -19,7 +19,7 @@ namespace RentACarDesktop
         private LoginViewModel? InitializeModel()
         {
             LoginViewModel loginViewModel = new LoginViewModel();
-            loginViewModel.Email = txtUsername.Text.ToString();
+            loginViewModel.Email = txtEmail.Text.ToString();
             loginViewModel.Password = txtPassword.Password.ToString();
 
             return loginViewModel;
@@ -38,6 +38,7 @@ namespace RentACarDesktop
             {
                 Application.Current.Properties["token"] = responseObject.Message;
             }
+
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 MainPanel mainPanel = new();
