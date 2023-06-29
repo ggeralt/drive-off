@@ -5,19 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Edit Vehicle" WindowStartupLocation="CenterScreen" Height="450" Width="800">
-    <StackPanel Width="800" Grid.Row="1" Orientation="Vertical" Margin="8,8,0,0">
+        Title="RentACar Admin - Edit Vehicle" WindowStartupLocation="CenterScreen" Height="450" Width="600" ResizeMode="CanMinimize">
+    <StackPanel Width="590" Grid.Row="1" Orientation="Vertical" Margin="8,8,0,0">
         <Grid>
-            <TextBlock Text="Title" FontSize="24" />
-            <TextBox x:Name="tbTitle" Text="Title" FontSize="24" Margin="150,0,0,0" />
-            <TextBlock Text="Certificate" FontSize="24" Margin="0,32,0,0" />
-            <TextBlock Text="Model" FontSize="24" Margin="0,64,0,0" />
-            <TextBlock Text="Brand" FontSize="24" Margin="0,96,0,0" />
-            <TextBlock Text="Type" FontSize="24" Margin="0,128,0,0" />
-            <TextBlock Text="Description" FontSize="24" Margin="0,160,0,0" />
-            <TextBlock Text="Location" FontSize="24" Margin="0,192,0,0" />
-            <TextBlock Text="Latitude" FontSize="24" Margin="0,224,0,0" />
-            <TextBlock Text="Lognitude" FontSize="24" Margin="0,256,0,0" />
+            <TextBlock Text="Title:" FontSize="24" />
+            <TextBox x:Name="tbTitle" Text="Title" FontSize="24" Margin="150,0,0,0" BorderThickness="0" />
+            <TextBlock Text="Certificate:" FontSize="24" Margin="0,32,0,0" />
+            <TextBox x:Name="tbCertificate" Text="Certificate" FontSize="24" Margin="150,32,0,0" IsReadOnly="True" BorderThickness="0" />
+            <TextBlock Text="Model:" FontSize="24" Margin="0,64,0,0" />
+            <TextBox x:Name="tbModel" Text="Model" FontSize="24" Margin="150,64,0,0" BorderThickness="0" />
+            <TextBlock Text="Brand:" FontSize="24" Margin="0,96,0,0" />
+            <TextBox x:Name="tbBrand" Text="Brand" FontSize="24" Margin="150,96,0,0" BorderThickness="0" />
+            <TextBlock Text="Type:" FontSize="24" Margin="0,128,0,0" />
+            <TextBox x:Name="tbType" Text="Type" FontSize="24" Margin="150,128,0,0" BorderThickness="0" />
+            <TextBlock Text="Description:" FontSize="24" Margin="0,160,0,0" />
+            <TextBox x:Name="tbDescription" Text="Description" FontSize="24" Margin="150,160,0,0" BorderThickness="0" />
+            <TextBlock Text="Location:" FontSize="24" Margin="0,192,0,0" />
+            <TextBox x:Name="tbLocation" Text="Location" FontSize="24" Margin="150,192,0,0" BorderThickness="0" />
+            <TextBlock Text="Latitude:" FontSize="24" Margin="0,224,0,0" />
+            <TextBox x:Name="tbLatitude" Text="Latitude" FontSize="24" Margin="150,224,0,0" BorderThickness="0" />
+            <TextBlock Text="Lognitude:" FontSize="24" Margin="0,256,0,0" />
+            <TextBox x:Name="tbLongitude" Text="Longitude" FontSize="24" Margin="150,256,0,0" BorderThickness="0" />
+            <TextBlock Text="Price:" FontSize="24" Margin="0,288,0,0" />
+            <TextBox x:Name="tbPrice" Text="Price" FontSize="24" Margin="150,288,0,80" BorderThickness="0" />
+            <StackPanel Width="590" Grid.Row="1" Orientation="Horizontal" Margin="0,350,0,0">
+                <Button x:Name="btnDelete"
+                        Content="DELETE"
+                        FontSize="24"
+                        Foreground="Red"
+                        Width="100"
+                        Height="50" 
+                        Click="btnDelete_Click" />
+                <Button x:Name="btnAddCertificate"
+                        Content="ADD CERTIFICATE"
+                        FontSize="24"
+                        Foreground="Green"
+                        Width="200"
+                        Height="50" 
+                        Click="btnAddCertificate_Click" />
+            </StackPanel>
         </Grid>
     </StackPanel>
 </Window>

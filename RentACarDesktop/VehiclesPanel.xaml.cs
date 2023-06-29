@@ -14,6 +14,10 @@ namespace RentACarDesktop
         public VehiclesPanel()
         {
             InitializeComponent();
+        }
+
+        private void Window_Activated(object sender, System.EventArgs e)
+        {
             GetVehicles();
         }
 
@@ -22,9 +26,7 @@ namespace RentACarDesktop
             var client = new HttpClient();
             string token = Application.Current.Properties["token"].ToString();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
             var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllNonConfirmedVehicles");
-            //var response = await client.GetAsync("https://localhost:7218/api/Vehicle/GetAllVehicles");
 
             if (response.IsSuccessStatusCode)
             {
@@ -37,9 +39,18 @@ namespace RentACarDesktop
         private void MouseDoubleClickToUpdateSelectedVehicle(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             VehicleViewModel selectedVehicle = (VehicleViewModel)lbVehicles.SelectedItem;
-            EditVehiclePanel editVehiclePanel = new(selectedVehicle);
-            this.Hide();
-            editVehiclePanel.Show();
+            
+            if (selectedVehicle != null)
+            {
+                EditVehiclePanel editVehiclePanel = new(selectedVehicle);
+                editVehiclePanel.Show();
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainPanel mainPanel = new MainPanel();
+            mainPanel.Show();
         }
     }
 }
