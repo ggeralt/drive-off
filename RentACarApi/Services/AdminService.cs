@@ -155,5 +155,28 @@ namespace RentACarApi.Services
                 IsSuccess = false
             };
         }
+
+        public async Task<List<UserViewModel>> GetAllUsersAsync()
+        {
+            var users = await context.Users.ToListAsync();
+
+            if (users == null)
+            {
+                return null;
+            }
+
+            List<UserViewModel> userViewModels = new List<UserViewModel>();
+            foreach (var user in users)
+            {
+                UserViewModel userViewModel = new UserViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Username = user.UserName
+                };
+                userViewModels.Add(userViewModel);
+            }
+            return userViewModels;
+        }
     }
 }

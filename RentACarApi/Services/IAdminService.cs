@@ -9,6 +9,6 @@ namespace RentACarApi.Services
         Task<VehicleViewModel> GetNonConfirmedVehicleAsync(int vehicleId);
         Task<ManagerResponse> DeleteAccount(string id);
         Task<ManagerResponse> DeleteVehicleAsync(int vehicleId);
-
+        Task<List<UserViewModel>> GetAllUsersAsync();
     }
 }

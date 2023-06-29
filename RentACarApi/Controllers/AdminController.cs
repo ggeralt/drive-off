@@ -54,6 +54,19 @@ namespace RentACarApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAllUsers"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await adminService.GetAllUsersAsync();
+
+            if (result == null)
+            {
+                return NotFound("Failed to find vehicles");
+            }
+
+            return Ok(result);
+        }
+
         [HttpDelete("DeleteAccount"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
