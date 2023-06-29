@@ -2,7 +2,6 @@
 using RentACarShared;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace RentACarDesktop
@@ -41,6 +40,7 @@ namespace RentACarDesktop
             string token = Application.Current.Properties["token"].ToString();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             var response = await client.DeleteAsync($"https://localhost:7218/api/Admin/DeleteVehicle?vehicleId={_vehicleToEdit.Id}");
+            this.Close();
         }
 
         private async void btnAddCertificate_Click(object sender, RoutedEventArgs e)
@@ -57,6 +57,7 @@ namespace RentACarDesktop
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 tbCertificate.Text = "True";
+                this.Close();
             }
         }
     }

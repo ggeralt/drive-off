@@ -14,6 +14,10 @@ namespace RentACarDesktop
         public VehiclesPanel()
         {
             InitializeComponent();
+        }
+
+        private void Window_Activated(object sender, System.EventArgs e)
+        {
             GetVehicles();
         }
 
@@ -39,9 +43,14 @@ namespace RentACarDesktop
             if (selectedVehicle != null)
             {
                 EditVehiclePanel editVehiclePanel = new(selectedVehicle);
-                this.Hide();
                 editVehiclePanel.Show();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MainPanel mainPanel = new MainPanel();
+            mainPanel.Show();
         }
     }
 }

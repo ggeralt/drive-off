@@ -21,7 +21,9 @@ namespace RentACarDesktop
 
         private void btnUsers_Click(object sender, RoutedEventArgs e)
         {
-
+            UsersPanel usersPanel = new();
+            this.Hide();
+            usersPanel.Show();
         }
     }
 }

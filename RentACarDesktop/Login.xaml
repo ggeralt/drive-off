@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Login" WindowStartupLocation="CenterScreen" Height="500" Width="500">
+        Title="RentACar Admin - Login" WindowStartupLocation="CenterScreen" Height="500" Width="500" ResizeMode="CanMinimize">
     <Grid>
         <StackPanel Width="220" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
             <TextBlock Text="Email" 

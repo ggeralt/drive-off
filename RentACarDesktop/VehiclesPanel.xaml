@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Vehicles" WindowStartupLocation="CenterScreen" Height="450" Width="600">
+        Title="RentACar Admin - Vehicles" WindowStartupLocation="CenterScreen" Height="450" Width="600" Activated="Window_Activated" Closing="Window_Closing" ResizeMode="CanMinimize">
     <Grid>
-        <ListView x:Name="lbVehicles" FontSize="16" MouseDoubleClick="MouseDoubleClickToUpdateSelectedVehicle" ToolTip="Double click to assign certificate">
+        <ListView x:Name="lbVehicles" FontSize="16" MouseDoubleClick="MouseDoubleClickToUpdateSelectedVehicle" ToolTip="Double click to edit a vehicle">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>

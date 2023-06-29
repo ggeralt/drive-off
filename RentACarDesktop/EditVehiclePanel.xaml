@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Edit Vehicle" WindowStartupLocation="CenterScreen" Height="450" Width="600">
+        Title="RentACar Admin - Edit Vehicle" WindowStartupLocation="CenterScreen" Height="450" Width="600" ResizeMode="CanMinimize">
     <StackPanel Width="590" Grid.Row="1" Orientation="Vertical" Margin="8,8,0,0">
         <Grid>
             <TextBlock Text="Title:" FontSize="24" />
