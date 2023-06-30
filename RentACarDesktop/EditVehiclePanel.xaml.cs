@@ -56,7 +56,6 @@ namespace RentACarDesktop
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                tbCertificate.Text = "True";
                 this.Close();
             }
         }

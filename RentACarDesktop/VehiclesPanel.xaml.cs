@@ -18,10 +18,10 @@ namespace RentACarDesktop
 
         private void Window_Activated(object sender, System.EventArgs e)
         {
-            GetVehicles();
+            GetAllNonConfirmedVehicles();
         }
 
-        private async void GetVehicles()
+        private async void GetAllNonConfirmedVehicles()
         {
             var client = new HttpClient();
             string token = Application.Current.Properties["token"].ToString();

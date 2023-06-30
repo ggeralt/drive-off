@@ -20,15 +20,15 @@ namespace RentACarDesktop
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            GetUsers();
+            GetAllUsers();
         }
 
-        private async void GetUsers()
+        private async void GetAllUsers()
         {
             var client = new HttpClient();
             string token = Application.Current.Properties["token"].ToString();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllUsersVehicles");
+            var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllUsers");
 
             if (response.IsSuccessStatusCode)
             {
