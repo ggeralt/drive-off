@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RentACarShared;
-using System;
+using RentACarDesktop.Model;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -12,16 +11,16 @@ namespace RentACarDesktop
     /// </summary>
     public partial class EditUserPanel : Window
     {
-        private UserViewModel _userToEdit = new();
+        private UserModel _userToEdit = new();
 
-        public EditUserPanel(UserViewModel userToEdit)
+        public EditUserPanel(UserModel userToEdit)
         {
             InitializeComponent();
             _userToEdit = userToEdit;
             LoadUser(_userToEdit);
         }
 
-        private void LoadUser(UserViewModel userToEdit)
+        private void LoadUser(UserModel userToEdit)
         {
             tbId.Text = userToEdit.Id;
             tbUserName.Text = userToEdit.Username;
@@ -58,11 +57,6 @@ namespace RentACarDesktop
             {
                 tbEmailConfirmed.Text = response.StatusCode.ToString();
             }
-        }
-
-        private void btnConfirmDrivingLicence_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

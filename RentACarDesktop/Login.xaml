@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="RentACar Admin - Login" WindowStartupLocation="CenterScreen" Height="500" Width="500" ResizeMode="CanMinimize">
     <Grid>
-        <StackPanel Width="220" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
+        <StackPanel Width="250" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
             <TextBlock Text="Email" 
                        FontSize="24" 
                        FontWeight="Medium" 
@@ -31,20 +31,10 @@
                          VerticalContentAlignment="Center" 
                          Margin="0,5,0,0"/>
             <Button x:Name="btnLogin" FontWeight="Bold" FontSize="24" BorderThickness="2" Content="LOG IN" Cursor="Hand" Margin="0,50,0,0" Click="btnLogin_ClickAsync"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-                <TextBlock Text="Forgot Password?"
-                           FontSize="12"
-                           FontWeight="Medium" />
-                <Button Content="Reset"
-                        FontSize="12"
-                        FontWeight="Medium"
-                        Cursor="Hand"
-                        Margin="8,0,0,0"/>
-            </StackPanel>
             <Label x:Name="txtStatus"
-                   Width="220" 
+                   Width="225" 
                    Margin="0,8,0,0"
-                   FontSize="14" 
+                   FontSize="16" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Foreground="Red"/>

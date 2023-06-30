@@ -26,18 +26,6 @@
                         Width="100"
                         Height="50" 
                         Click="btnDelete_Click" />
-                <Button x:Name="btnConfirmEmail"
-                        Content="CONFIRM EMAIL"
-                        FontSize="24"
-                        Foreground="Green"
-                        Width="200"
-                        Height="50" Click="btnConfirmEmail_Click" />
-                <Button x:Name="btnConfirmDrivingLicence"
-                        Content="CONFIRM DRIVING LICENCE"
-                        FontSize="24"
-                        Foreground="Green"
-                        Width="325"
-                        Height="50" Click="btnConfirmDrivingLicence_Click" />
             </StackPanel>
         </Grid>
     </StackPanel>

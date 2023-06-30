@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using RentACarShared;
 using System.Net.Http;
 using System.Text;
@@ -32,18 +33,23 @@ namespace RentACarDesktop
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7218/api/Auth/Login", content);
             var responseBody = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(responseBody);
 
-            if (responseObject.IsSuccess)
+            try
             {
+                var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(responseBody);
                 Application.Current.Properties["token"] = responseObject.Message;
+            }
+            catch 
+            {
+                txtStatus.Content = "Login credentials are not valid!";
+                return;
             }
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 MainPanel mainPanel = new();
-                this.Hide();
                 mainPanel.Show();
+                this.Close();
             }
             else
             {
