@@ -1,0 +1,24 @@
+﻿<Window x:Class="RentACarDesktop.VehiclesPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RentACarDesktop"
+        mc:Ignorable="d"
+        Title="RentACar Admin - Vehicles" WindowStartupLocation="CenterScreen" Height="450" Width="600" Activated="Window_Activated" Closing="Window_Closing" ResizeMode="CanMinimize">
+    <Grid>
+        <ListView x:Name="lbVehicles" FontSize="16" MouseDoubleClick="MouseDoubleClickToUpdateSelectedVehicle" ToolTip="Double click to edit a vehicle">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Title" Width="110" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Model" Width="110" DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn Header="Brand" Width="110" DisplayMemberBinding="{Binding Brand}"/>
+                        <GridViewColumn Header="Description" Width="110" DisplayMemberBinding="{Binding Description}"/>
+                        <GridViewColumn Header="HasCertificate" Width="110" DisplayMemberBinding="{Binding HasCertificate}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

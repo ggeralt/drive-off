@@ -1,0 +1,21 @@
+﻿<Window x:Class="RentACarDesktop.UsersPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RentACarDesktop"
+        mc:Ignorable="d"
+        Title="RentACar Admin - Users" Height="450" Width="600" Activated="Window_Activated" Closing="Window_Closing" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <ListView x:Name="lbUsers" FontSize="16" ToolTip="Double click to edit a user" MouseDoubleClick="MouseDoubleClickToUpdateSelectedUser">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="Id" Width="325" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding Email}"/>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

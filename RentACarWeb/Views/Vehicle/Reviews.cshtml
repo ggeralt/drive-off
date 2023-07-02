@@ -1,0 +1,18 @@
+﻿@model IEnumerable<RentACarShared.ReviewViewModel>
+
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h1>Reviews</h1>
+
+@foreach (var item in Model)
+{
+    <div class="border border-dark rounded" style="margin-bottom: 30px">
+        <div style="margin-left: 20px; margin-right: 20px;">
+            @Html.DisplayFor(modelItem => item.User) <br>
+            @Html.DisplayFor(modelItem => item.Description) <br>
+            @Html.ActionLink("Delete", "DeleteReview", "Vehicle", new { reviewId = item.Id}, new {@class = "btn btn-danger"})
+        </div>
+    </div>
+}

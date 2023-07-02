@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RentACarApi.Model;
 using RentACarShared;
@@ -15,12 +17,17 @@ namespace RentACarApi.Services
         private readonly IConfiguration configuration;
         private readonly IMailService mailService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService, IHttpContextAccessor httpContextAccessor)
+        private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
+        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailService mailService, 
+            IHttpContextAccessor httpContextAccessor, ApplicationDbContext context, IMapper mapper)
         {
             this.userManager = userManager;
             this.configuration = configuration;
             this.mailService = mailService;
             this.httpContextAccessor = httpContextAccessor;
+            this.context = context;
+            this.mapper = mapper;
         }
 
         public async Task<ManagerResponse> ConfirmEmail(string userId, string token)
@@ -116,16 +123,6 @@ namespace RentACarApi.Services
             };
         }
 
-        public string GetUserId()
-        {
-            if (httpContextAccessor.HttpContext != null)
-            {
-                string result = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return result;
-            }
-            return string.Empty;
-        }
-
         public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
@@ -140,12 +137,33 @@ namespace RentACarApi.Services
                 };
             }
 
-            var claims = new[]
+            var userRole = await userManager.GetRolesAsync(user);
+            if (userRole.Count > 0)
             {
-                new Claim("Email", model.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
-            };
+                string role = userRole.First();
+                var claims = new[]
+                {
+                    new Claim("Email", model.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Role, role)
+                };
 
+                return GenerateToken(claims);
+            }
+            else
+            {
+                var claims = new[]
+                {
+                    new Claim("Email", model.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
+                };
+
+                return GenerateToken(claims);
+            }
+        }
+
+        private ManagerResponse GenerateToken(Claim[] claims)
+        {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AuthSettings:Key"]));
 
             var token = new JwtSecurityToken(

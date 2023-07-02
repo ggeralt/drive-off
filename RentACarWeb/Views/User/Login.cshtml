@@ -33,6 +33,15 @@
     </div>
 </div>
 
+@if (ViewBag.message != null)
+{
+    <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center; margin-top: 30px;">
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.message
+        </div>
+    </div>
+}
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -9,11 +9,12 @@ namespace RentACarShared
 {
     public class ReservationViewModel
     {
-
         [Required]
         public DateTime DateFrom { get; set; }
 
         [Required]
         public DateTime DateTo { get; set; }
+        [Required]
+        public int VehicleId { get; set; }
     }
 }

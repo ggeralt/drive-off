@@ -3,76 +3,93 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentACarApi.Model;
 using RentACarShared;
+using System.Security.Claims;
 
 namespace RentACarApi.Services
 {
     public class ReservationService : IReservationService
     {
-        private ApplicationDbContext context;
-        private UserManager<ApplicationUser> userManager;
+        private readonly ApplicationDbContext context;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
 
-        public ReservationService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public ReservationService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
+            IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             this.context = context;
             this.userManager = userManager;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ManagerResponse> CreateReservationAsync(string userId, int vehicleId, ReservationViewModel model)
+        public async Task<ManagerResponse> CreateReservationAsync(ReservationViewModel model)
         {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null)
+            if (httpContextAccessor.HttpContext != null)
             {
-                return new ManagerResponse
+                string userId = GetUserId();
+
+                var user = await userManager.FindByIdAsync(userId);
+                if (user == null)
                 {
-                    Message = "Failed to find userId",
-                    IsSuccess = false
-                };
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to find userId",
+                        IsSuccess = false
+                    };
+                }
+
+                var vehicle = await context.Vehicles.FindAsync(model.VehicleId);
+                if (vehicle == null)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to find vehicleId",
+                        IsSuccess = false
+                    };
+                }
+
+                if (model == null)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "Vehicle model is null",
+                        IsSuccess = false
+                    };
+                }
+                var reservations = await context.Reservations.Where(d => d.DateFrom <= model.DateTo && model.DateFrom <= d.DateTo && d.Vehicle.Id == model.VehicleId).ToListAsync();
+
+                if (reservations.Count > 0)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "That date is already booked",
+                        IsSuccess = false
+                    };
+                }
+
+                Reservation reservationModel = mapper.Map<Reservation>(model);
+                reservationModel.applicationUser = user;
+                reservationModel.Vehicle = vehicle;
+
+                context.Reservations.Add(reservationModel);
+
+                var result = await context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "New reservation Created",
+                        IsSuccess = true
+                    };
+                }
             }
 
-            var vehicle = await context.Vehicles.FindAsync(vehicleId);
-            if (vehicle == null)
+            return new ManagerResponse
             {
-                return new ManagerResponse
-                {
-                    Message = "Failed to find vehicleId",
-                    IsSuccess = false
-                };
-            }
-            
-            if (model == null)
-            {
-                return new ManagerResponse
-                {
-                    Message = "Vehicle model is null",
-                    IsSuccess = false
-                };
-            }
-
-            Reservation reservationModel = mapper.Map<Reservation>(model);
-            reservationModel.applicationUser = user;
-            reservationModel.Vehicle = vehicle;
-
-            context.Reservations.Add(reservationModel);
-
-            var result = await context.SaveChangesAsync();
-            if (result > 0)
-            {
-                return new ManagerResponse
-                {
-                    Message = "New reservation Created",
-                    IsSuccess = true
-                };
-            }
-            else
-            {
-                return new ManagerResponse
-                {
-                    Message = "Failed to create new reservation",
-                    IsSuccess = false
-                };
-            }
+                Message = "Failed to create new reservation",
+                IsSuccess = false
+            };
         }
 
         public async Task<ManagerResponse> DeleteReservationAsync(int reservationId)
@@ -108,10 +125,30 @@ namespace RentACarApi.Services
             }
         }
 
-        public async Task<List<Reservation>> GetAllReservationsAsync()
+        public async Task<List<ReservationView>> GetAllReservationsAsync()
         {
-            var reservations = await context.Reservations.ToListAsync();
-            return reservations;
+            string userId = GetUserId();
+            var reservations = await context.Reservations.Include(r => r.Vehicle).Where(r => r.Vehicle.ApplicationUser.Id == userId).ToListAsync();
+
+            if (reservations != null)
+            {
+                List<ReservationView> reservationViewModels = new List<ReservationView>();
+
+                foreach (var reservation in reservations)
+                {
+                    ReservationView reservationViewModel = new ReservationView
+                    {
+                        Id = reservation.Id,
+                        DateFrom = reservation.DateFrom,
+                        DateTo = reservation.DateTo,
+                        Vehicle = reservation.Vehicle.Title
+                    };
+                    reservationViewModels.Add(reservationViewModel);
+                }
+                return reservationViewModels;
+            }
+
+            return null;
         }
 
         public async Task<Reservation> GetReservationAsync(int reservationId)
@@ -161,6 +198,10 @@ namespace RentACarApi.Services
                     IsSuccess = false
                 };
             }
+        }
+        private string GetUserId()
+        {
+            return httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

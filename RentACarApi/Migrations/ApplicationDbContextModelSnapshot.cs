@@ -245,7 +245,7 @@ namespace RentACarApi.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Pictures", (string)null);
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("RentACarApi.Model.Reservation", b =>
@@ -274,7 +274,7 @@ namespace RentACarApi.Migrations
 
                     b.HasIndex("applicationUserId");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("RentACarApi.Model.Review", b =>
@@ -301,7 +301,7 @@ namespace RentACarApi.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("RentACarApi.Model.Vehicle", b =>
@@ -341,6 +341,9 @@ namespace RentACarApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -353,7 +356,7 @@ namespace RentACarApi.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Vehicles", (string)null);
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

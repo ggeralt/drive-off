@@ -8,6 +8,7 @@ namespace RentACarWeb.Controllers
     public class UserController : Controller
     {
         private readonly IHttpClientFactory httpClientFactory;
+
         public UserController(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
@@ -27,16 +28,18 @@ namespace RentACarWeb.Controllers
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
 
-            return View(model);
+            return RedirectToAction("Index", "Vehicle");
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string message)
         {
+            ViewBag.message = message;
             return View();
         }
 
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
+            HttpContext.Session.Clear();
             var client = httpClientFactory.CreateClient();
 
             var jsonData = JsonConvert.SerializeObject(model);
@@ -48,8 +51,18 @@ namespace RentACarWeb.Controllers
             if (responseObject.IsSuccess)
             {
                 HttpContext.Session.SetString("JWTtoken", responseObject.Message);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Vehicle");
             }
+            else
+            {
+                return RedirectToAction("Login", new { message = responseObject.Message });
+            }
+            return RedirectToAction("Login");
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
 
@@ -61,8 +74,6 @@ namespace RentACarWeb.Controllers
         {
             var client = httpClientFactory.CreateClient();
 
-            //var jsonData = JsonConvert.SerializeObject(email);
-            //var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"https://localhost:7218/api/Auth/ForgetPassword?email={email}", new StringContent(email));
             var respnseBody = await response.Content.ReadAsStringAsync();
             var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
@@ -72,6 +83,20 @@ namespace RentACarWeb.Controllers
                 return RedirectToAction("ForgetPassword");
             }
             return RedirectToAction("Login");
+        }
+        public async Task<IActionResult> DeleteAccount(string userId)
+        {
+            var client = httpClientFactory.CreateClient();
+
+            var response = await client.DeleteAsync($"https://localhost:7218/api/Auth/DeleteAccount?id={userId}");
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            if (responseObject.IsSuccess)
+            {
+                return RedirectToAction("Register");
+            }
+            return BadRequest();
         }
     }
 }

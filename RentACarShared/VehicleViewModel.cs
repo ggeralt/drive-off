@@ -9,6 +9,7 @@ namespace RentACarShared
 {
     public class VehicleViewModel
     {
+        public int? Id { get; set; }
         [Required]
         public string Title { get; set; }
 
@@ -26,6 +27,9 @@ namespace RentACarShared
 
         [Required]
         public string Description { get; set; }
+
+        [Required]
+        public double Price { get; set; }
 
         [Required]
         public string Location { get; set; }

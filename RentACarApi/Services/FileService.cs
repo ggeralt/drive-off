@@ -11,13 +11,6 @@ namespace RentACarApi.Services
         {
             this.context = context;
         }
-
-        public async Task<Picture> GetPictureAsync(int pictureId)
-        {
-            var picture = await context.Pictures.FindAsync(pictureId);
-            
-            return picture;
-        }
         public async Task<ManagerResponse> DeletePictureAsync(int pictureId)
         {
             var picture = await context.Pictures.FindAsync(pictureId);
