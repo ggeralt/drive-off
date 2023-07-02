@@ -5,15 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Users" Height="450" Width="600" Activated="Window_Activated" Closing="Window_Closing">
+        Title="RentACar Admin - Users" Height="450" Width="600" Activated="Window_Activated" Closing="Window_Closing" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid>
         <ListView x:Name="lbUsers" FontSize="16" ToolTip="Double click to edit a user" MouseDoubleClick="MouseDoubleClickToUpdateSelectedUser">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="Id" Width="110" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="Username" Width="110" DisplayMemberBinding="{Binding UserName}"/>
-                        <GridViewColumn Header="Email" Width="110" DisplayMemberBinding="{Binding Email}"/>
+                        <GridViewColumn Header="Id" Width="325" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding Email}"/>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>

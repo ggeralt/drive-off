@@ -5,8 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Edit User" Height="450" Width="600">
-    <Grid>
-        
-    </Grid>
+        Title="RentACar Admin - Edit User" Height="300" Width="700" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <StackPanel Width="690" Grid.Row="1" Orientation="Vertical" Margin="8,8,0,0">
+        <Grid>
+            <TextBlock Text="Id:" FontSize="24" />
+            <TextBox x:Name="tbId" Text="Id" FontSize="24" Margin="225,0,0,0" BorderThickness="0" />
+            <TextBlock Text="Username:" FontSize="24" Margin="0,32,0,0" />
+            <TextBox x:Name="tbUserName" Text="UserName" FontSize="24" Margin="225,32,0,0" BorderThickness="0" />
+            <TextBlock Text="Email:" FontSize="24" Margin="0,64,0,0" />
+            <TextBox x:Name="tbEmail" Text="Email" FontSize="24" Margin="225,64,0,0" BorderThickness="0" />
+            <TextBlock Text="Email Confirmed:" FontSize="24" Margin="0,96,0,0" />
+            <TextBox x:Name="tbEmailConfirmed" Text="EmailConfirmed" FontSize="24" Margin="225,96,0,0" BorderThickness="0" IsReadOnly="True" />
+            <TextBlock Text="Has Driving Licence:" FontSize="24" Margin="0,128,0,0" />
+            <TextBox x:Name="tbHasDrivingLicence" Text="HasDrivingLicence" FontSize="24" Margin="225,128,0,0" BorderThickness="0" IsReadOnly="True" />
+            <StackPanel Width="690" Grid.Row="1" Orientation="Horizontal" Margin="0,200,0,0">
+                <Button x:Name="btnDelete"
+                        Content="DELETE"
+                        FontSize="24"
+                        Foreground="Red"
+                        Width="100"
+                        Height="50" 
+                        Click="btnDelete_Click" />
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 </Window>

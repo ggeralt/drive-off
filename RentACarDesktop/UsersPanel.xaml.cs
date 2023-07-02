@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RentACarDesktop.Model;
 using RentACarShared;
 using System;
 using System.Collections.Generic;
@@ -20,27 +21,27 @@ namespace RentACarDesktop
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            GetUsers();
+            GetAllUsers();
         }
 
-        private async void GetUsers()
+        private async void GetAllUsers()
         {
             var client = new HttpClient();
             string token = Application.Current.Properties["token"].ToString();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllUsersVehicles");
+            var response = await client.GetAsync("https://localhost:7218/api/Admin/GetAllUsers");
 
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                List<UserViewModel>? users = JsonConvert.DeserializeObject<List<UserViewModel>>(json);
+                List<UserModel>? users = JsonConvert.DeserializeObject<List<UserModel>>(json);
                 lbUsers.ItemsSource = users;
             }
         }
 
         private void MouseDoubleClickToUpdateSelectedUser(object sender, MouseButtonEventArgs e)
         {
-            UserViewModel selectedUser = (UserViewModel)lbUsers.SelectedItem;
+            UserModel selectedUser = (UserModel)lbUsers.SelectedItem;
 
             if (selectedUser != null)
             {
