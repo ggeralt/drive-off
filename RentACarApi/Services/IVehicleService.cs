@@ -11,5 +11,8 @@ namespace RentACarApi.Services
         Task<VehicleViewModel> GetVehicleAsync(int vehicleId);
         Task<List<VehicleViewModel>> GetAllVehiclesAsync();
         Task<List<VehicleViewModel>> GetSearchedVehiclesAsync(string searchValue);
+        Task<List<ReviewViewModel>> GetReviewsAsync(int vehicleId);
+        Task<ManagerResponse> AddReviewsAsync(ReviewViewModel reviewViewModel);
+        Task<ManagerResponse> DeleteReviewAsync(int reviewId);
     }
 }

@@ -31,8 +31,9 @@ namespace RentACarWeb.Controllers
             return RedirectToAction("Index", "Vehicle");
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string message)
         {
+            ViewBag.message = message;
             return View();
         }
 
@@ -50,7 +51,11 @@ namespace RentACarWeb.Controllers
             if (responseObject.IsSuccess)
             {
                 HttpContext.Session.SetString("JWTtoken", responseObject.Message);
-                return RedirectToAction("Index", "Vehicle"); 
+                return RedirectToAction("Index", "Vehicle");
+            }
+            else
+            {
+                return RedirectToAction("Login", new { message = responseObject.Message });
             }
             return RedirectToAction("Login");
         }

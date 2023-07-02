@@ -114,5 +114,47 @@ namespace RentACarApi.Controllers
                 return Ok(result);
             }
         }
+        [HttpGet("GetReviews")]
+        public async Task<IActionResult> GetReviews(int vehicleId)
+        {
+            var result = await vehicleService.GetReviewsAsync(vehicleId);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+        [HttpPost("CreateReview"), Authorize]
+        public async Task<IActionResult> CreateReview(ReviewViewModel reviewViewModel)
+        {
+            var result = await vehicleService.AddReviewsAsync(reviewViewModel);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+        [HttpDelete("DeleteReview"), Authorize]
+        public async Task<IActionResult> DeleteReview(int reviewId)
+        {
+            var result = await vehicleService.DeleteReviewAsync(reviewId);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
     }
 }

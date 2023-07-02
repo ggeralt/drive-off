@@ -240,5 +240,117 @@ namespace RentACarApi.Services
 
             return vehicleViewModels;
         }
+
+        public async Task<List<ReviewViewModel>> GetReviewsAsync(int vehicleId)
+        {
+            var vehicle = await context.Vehicles.FindAsync(vehicleId);
+
+            if (vehicle == null)
+            {
+                return null;
+            }
+
+            var reviews = await context.Reviews.Include(r => r.ApplicationUser).Include(r => r.Vehicle).Where(r => r.Vehicle.Id == vehicleId).ToListAsync();
+
+            if (reviews == null)
+            {
+                return null;
+            }
+
+            List<ReviewViewModel> reviewViewModels = new List<ReviewViewModel>();
+            foreach (var review in reviews)
+            {
+                ReviewViewModel reviewViewModel = new ReviewViewModel
+                {
+                    Id = review.Id,
+                    User = review.ApplicationUser.UserName,
+                    Description = review.Description
+                };
+                reviewViewModels.Add(reviewViewModel);
+            }
+
+            return reviewViewModels;
+        }
+        public async Task<ManagerResponse> AddReviewsAsync(ReviewViewModel reviewViewModel)
+        {
+            if (httpContextAccessor.HttpContext != null)
+            {
+                string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var vehicle = await context.Vehicles.FindAsync(reviewViewModel.VehicleId);
+                var user = await context.Users.FindAsync(userId);
+
+                Review review = new Review
+                {
+                    Description = reviewViewModel.Description,
+                    ApplicationUser = user,
+                    Vehicle = vehicle
+                };
+
+                await context.Reviews.AddAsync(review);
+                var result = await context.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "New review Created",
+                        IsSuccess = true
+                    };
+                }
+                else
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to create review",
+                        IsSuccess = false
+                    };
+                }
+            }
+            return new ManagerResponse
+            {
+                Message = "Login and try again",
+                IsSuccess = false
+            };
+        }
+
+        public async Task<ManagerResponse> DeleteReviewAsync(int reviewId)
+        {
+            if (httpContextAccessor.HttpContext != null)
+            {
+                string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var review = await context.Reviews.Include(r => r.ApplicationUser).FirstAsync(r => r.Id == reviewId);
+
+                if (review.ApplicationUser.Id != userId)
+                {
+                    return null;
+                }
+                context.Reviews.Remove(review);
+                var result = await context.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "The review has been deleted",
+                        IsSuccess = true
+                    };
+                }
+                else
+                {
+                    return new ManagerResponse
+                    {
+                        Message = "Failed to delete review",
+                        IsSuccess = false
+                    };
+                }
+            }
+            return new ManagerResponse
+            {
+                Message = "Login and try again",
+                IsSuccess = false
+            };
+        }
     }
 }

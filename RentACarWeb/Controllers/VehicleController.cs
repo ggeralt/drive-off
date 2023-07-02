@@ -256,7 +256,7 @@ namespace RentACarWeb.Controllers
 
                 return View(vehicleViewModels);
             }
-            return NotFound();
+            return NotFound("Account not found, login and try again");
         }
         public async Task<IActionResult> Reservation()
         {
@@ -284,6 +284,69 @@ namespace RentACarWeb.Controllers
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             var response = await client.DeleteAsync($"https://localhost:7218/api/Reservation1/DeleteReservation?reservationId={reservationId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Redirect(Request.Headers["Referer"].ToString());
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> Reviews(int vehicleId)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7218/api/Vehicle/GetReviews?vehicleId={vehicleId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var reviewViewModels = JsonConvert.DeserializeObject<List<ReviewViewModel>>(json);
+
+                return View(reviewViewModels);
+            }
+            return NotFound();
+        }
+        public ActionResult CreateReviews(int vehicleId, string message)
+        {
+            ViewBag.vehicleId = vehicleId;
+            ViewBag.message = message;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateReviews(ReviewViewModel reviewViewModel)
+        {
+            var client = httpClientFactory.CreateClient();
+
+            var token = HttpContext.Session.GetString("JWTtoken");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var jsonData = JsonConvert.SerializeObject(reviewViewModel);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"https://localhost:7218/api/Vehicle/CreateReview", content);
+
+            var respnseBody = await response.Content.ReadAsStringAsync();
+            var responseObject = JsonConvert.DeserializeObject<ManagerResponse>(respnseBody);
+
+            if (response.ReasonPhrase == "Unauthorized")
+            {
+                return RedirectToAction("CreateReviews", new { vehicleId = reviewViewModel.VehicleId, message = "Unauthorized user, login and try again" });
+            }
+            else if (!response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("CreateReviews", new { vehicleId = reviewViewModel.VehicleId, message = responseObject.Message });
+            }
+            
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+        
+        public async Task<IActionResult> DeleteReview(int reviewId)
+        {
+            var client = httpClientFactory.CreateClient();
+
+            var token = HttpContext.Session.GetString("JWTtoken");
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            var response = await client.DeleteAsync($"https://localhost:7218/api/Vehicle/DeleteReview?reviewId={reviewId}");
 
             if (response.IsSuccessStatusCode)
             {
