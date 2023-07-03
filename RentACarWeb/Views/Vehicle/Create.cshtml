@@ -14,12 +14,14 @@
         }
     </style>
 </head>
-
+<!-- <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
+        <div class="col-md-4 -->
 <body>
     <h1 style="text-align:center">Create new vehicle</h1>
     <hr />
-    <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
-        <div class="col-md-4">
+    <div class="container-fluid">
+        <div class="row mt-4" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
+           <div class="col-md-9">
             <p>Please enter all vehicle data.</p>
             @using (Html.BeginForm("Create", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
@@ -74,11 +76,14 @@
                     <br />
                     <input class="form-control" type="file" id="Picture" accept="image/*" multiple name="files">
                 </div>
-                <div id="map"></div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-outline-warning" />
+                <div class="row justify-content-md-center">
+                    <div id="map"></div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-warning" />
+                    </div>
                 </div>
             }
+            </div>
         </div>
     </div>
 </body>
