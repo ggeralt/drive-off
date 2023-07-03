@@ -128,7 +128,7 @@ namespace RentACarApi.Services
         public async Task<List<ReservationView>> GetAllReservationsAsync()
         {
             string userId = GetUserId();
-            var reservations = await context.Reservations.Include(r => r.Vehicle).Where(r => r.Vehicle.ApplicationUser.Id == userId).ToListAsync();
+            var reservations = await context.Reservations.Include(r => r.Vehicle).Where(r => r.applicationUser.Id == userId).ToListAsync();
 
             if (reservations != null)
             {

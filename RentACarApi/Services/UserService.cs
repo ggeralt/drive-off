@@ -97,7 +97,8 @@ namespace RentACarApi.Services
 
         public async Task<ManagerResponse> ForgetPassword(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            //var user = await userManager.FindByEmailAsync(email);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
             {
@@ -125,7 +126,8 @@ namespace RentACarApi.Services
 
         public async Task<ManagerResponse> LoginUser(LoginViewModel model)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
+            //var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             var result = await userManager.CheckPasswordAsync(user, model.Password);
 
             if (user == null || !result)
@@ -235,7 +237,8 @@ namespace RentACarApi.Services
 
         public async Task<ManagerResponse> ResetPassword(ResetPasswordViewModel model)
         {
-            var user = userManager.FindByEmailAsync(model.Email);
+            //var user = userManager.FindByEmailAsync(model.Email);
+            var user = context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (user == null)
             {
                 return new ManagerResponse
