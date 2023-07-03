@@ -23,7 +23,7 @@ namespace RentACarApi.Controllers
 
             if (result == null)
             {
-                return NotFound();
+                return NotFound("Vehicle not found or no certificate");
             }
 
             if (result.Id == vehicleId)
