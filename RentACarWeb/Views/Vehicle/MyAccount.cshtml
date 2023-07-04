@@ -4,30 +4,33 @@
     ViewData["Title"] = "MyAccount";
 }
 
-<h1>MyAccount</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+<h1 style="text-align: center">My Account</h1>
+<hr />
 <div>
-    <input id="userId" class="form-control" value="@ViewBag.User.Id" type="hidden"/>
+    <h3 style="text-align: left; color: darkgray">Username: @ViewBag.User.Username</h3>
 </div>
 <div>
-    <h3>Username: @ViewBag.User.Username</h3>
+    <h3 style="text-align: left; color: darkgray">Email: @ViewBag.User.Email</h3>
 </div>
 <div>
-    <h3>Email: @ViewBag.User.Email</h3>
+    <input id="userId" class="form-control" value="@ViewBag.User.Id" type="hidden" />
 </div>
+<div style="display:flex; justify-content:space-between; padding-top: 10px">
+<button type="button" class="btn btn-info btn-lg">
+   <a asp-action="Create" style="color: white; text-decoration: none;">Create New Vehicle</a>
+</button>
 <div>
-    @Html.ActionLink("Delete Account", "DeleteAccount", "User", new {userId = ViewBag.User.Id}, new {@class = "btn btn-danger"})
-    @Html.ActionLink("My Reservation", "Reservation", "Vehicle", null, new {@class = "btn btn-dark"})
+    @Html.ActionLink("Delete Account", "DeleteAccount", "User", new {userId = ViewBag.User.Id}, new {@class = "btn btn-outline-secondary"})
+    @Html.ActionLink("My Reservation", "Reservation", "Vehicle", null, new {@class = "btn btn-outline-primary"})
 </div>
-
-<div class="container">
+</div>
+<h3 style="text-align: center; padding-top: 10px">My Vehicles</h3>
+<hr />
+<div class="container-fluid pt-4">
     <div class="row">
         @foreach(var item in Model) {
-            <div class="col-md-3">
+            <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card" style="margin-bottom: 22px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                     @if (item.PictureViewModels.Count > 0)
                     {
@@ -42,9 +45,9 @@
                     <div class="card-body">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                         <p class="card-text">@Html.DisplayFor(modelItem => item.Price) €/Day</p>
-                        @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-primary"})
-                        @Html.ActionLink("Delete", "Delete", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-danger"})
-                        @Html.ActionLink("Edit", "Edit", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-dark"})
+                        @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-outline-info"})
+                        @Html.ActionLink("Delete", "Delete", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-outline-dark"})
+                        @Html.ActionLink("Edit", "Edit", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-outline-secondary"})
                     </div>
                 </div>
             </div>

@@ -7,10 +7,34 @@
         mc:Ignorable="d"
         Title="RentACar Admin - Main Panel" WindowStartupLocation="CenterScreen" Height="480" Width="800" ResizeMode="CanMinimize">
     <Grid>
-        <Label Margin="30,30,0,0" FontSize="32" Content="Choose what would you like to edit" />
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
+                <GradientStop Color="#A8CFF9" Offset="0.0" />
+                <GradientStop Color="#6DAFF4" Offset="0.25" />
+                <GradientStop Color="#2D8FEF" Offset="0.75" />
+                <GradientStop Color="#FFFFFF" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Margin="30,30,0,0" FontSize="32"
+               Grid.Row="0" Grid.ColumnSpan="3"
+               Content="Choose what would you like to edit:" />
         <Button x:Name="btnUsers"
-                    Height="150" Margin="468,175,30,110" FontWeight="Bold" FontSize="32" Content="Users" Click="btnUsers_Click"/>
+                Grid.Row="1" Grid.Column="0"
+                Height="150" 
+                FontWeight="SemiBold" FontSize="32" Content="Users" Click="btnUsers_Click"/>
         <Button x:Name="btnVehicles"
-                    Height="150" Margin="30,175,469,110" FontWeight="Bold" FontSize="32" Content="Vehicles" Click="btnVehicles_Click"/>
+                Height="150" 
+                Grid.Row="1" Grid.Column="2"
+                FontWeight="SemiBold" FontSize="32" Content="Vehicles" Click="btnVehicles_Click"/>
     </Grid>
 </Window>

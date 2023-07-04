@@ -6,7 +6,8 @@
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <style>
+    
+        <style>
         #map {
             width: 90vh;
             height: 50vh;
@@ -14,14 +15,13 @@
         }
     </style>
 </head>
-<!-- <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
-        <div class="col-md-4 -->
+
 <body>
     <h1 style="text-align:center">Create new vehicle</h1>
     <hr />
     <div class="container-fluid">
         <div class="row mt-4" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
-           <div class="col-md-9">
+            <div class="col-md-9">
             <p>Please enter all vehicle data.</p>
             @using (Html.BeginForm("Create", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
@@ -85,7 +85,8 @@
             }
             </div>
         </div>
-    </div>
+   </div>
+
 </body>
 
 @section Scripts {

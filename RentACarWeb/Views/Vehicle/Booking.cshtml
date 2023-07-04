@@ -4,21 +4,20 @@
     ViewData["Title"] = "Booking";
 }
 
-<h1>Booking</h1>
+<h1 style="text-align:center">Book a reservation</h1>
 
-<h4>ReservationViewModel</h4>
 <hr />
-<div class="row">
+<div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
     <div class="col-md-4">
         <form asp-action="Booking">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DateFrom" class="control-label"></label>
+            <div class="form-group" style="padding-bottom:10px">
+                <label asp-for="DateFrom" class="control-label" style="padding-bottom:10px">Date from</label>
                 <input asp-for="DateFrom" value="@DateTime.Now.ToShortDateString()" id="datepickerFrom" type="text" class="form-control" />
                 <span asp-validation-for="DateFrom" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateTo" class="control-label"></label>
+            <div class="form-group" style="padding-bottom:10px">
+                <label asp-for="DateTo" class="control-label" style="padding-bottom:10px">Date to</label>
                 <input asp-for="DateTo" value="@DateTime.Now.AddDays(1).ToShortDateString()" id="datepickerTo" type="text" class="form-control" />
                 <span asp-validation-for="DateTo" class="text-danger"></span>
             </div>
@@ -26,20 +25,19 @@
                 <input asp-for="VehicleId" value="@ViewBag.vehicleId" type="hidden" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Book" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
 </div>
+
 @if (ViewBag.message != null)
 {
     <div class="alert alert-secondary" role="alert">
         @ViewBag.message
     </div>
 }
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -5,7 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RentACarDesktop"
         mc:Ignorable="d"
-        Title="RentACar Admin - Edit User" Height="300" Width="700" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="RentACar Admin - Edit User" Height="300" Width="700" ResizeMode="CanMinimize" 
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="(Window.Opacity)"
+                        From="0.0" To="1.0" Duration="0:0:0.8"
+                        AutoReverse="False"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <!--
     <StackPanel Width="690" Grid.Row="1" Orientation="Vertical" Margin="8,8,0,0">
         <Grid>
             <TextBlock Text="Id:" FontSize="24" />
@@ -28,5 +42,57 @@
                         Click="btnDelete_Click" />
             </StackPanel>
         </Grid>
-    </StackPanel>
+    </StackPanel>-->
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
+                <GradientStop Color="#B6D9E6" Offset="0.0" />
+                <GradientStop Color="#9EE7D5" Offset="0.25" />
+                <GradientStop Color="#9AC7D8" Offset="0.75" />
+                <GradientStop Color="#D8FAC2" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="1.3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2.2*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Id:" FontSize="24" 
+                   Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="tbId" Text="Id" FontSize="24"
+                 Grid.Row="0" Grid.Column="1"/>
+        <TextBlock Text="Username:" FontSize="24" Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="tbUserName" Text="UserName" FontSize="24" 
+                 Grid.Row="1" Grid.Column="1"/>
+        <TextBlock Text="Email:" FontSize="24" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="tbEmail" Text="Email" FontSize="24"
+                 Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Text="Email Confirmed:" FontSize="24" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="tbEmailConfirmed" Text="EmailConfirmed" FontSize="24"
+                 Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
+        <TextBlock Text="Has Driving Licence:" FontSize="24" Grid.Row="4" Grid.Column="0"/>
+        <TextBox x:Name="tbHasDrivingLicence" Text="HasDrivingLicence" FontSize="24"
+                 Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
+
+        <Button x:Name="btnDelete"
+                Grid.Row="5"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                Content="DELETE"
+                FontSize="24"
+                Foreground="DarkBlue"
+                FontWeight="DemiBold"
+                Width="100"
+                Height="50" 
+                Click="btnDelete_Click" />
+        
+    </Grid>
 </Window>
