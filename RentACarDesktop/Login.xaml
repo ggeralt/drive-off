@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="RentACar Admin - Login" WindowStartupLocation="CenterScreen" Height="500" Width="500" ResizeMode="CanMinimize">
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
+                <GradientStop Color="#AEDFF7" Offset="0.0" />
+                <GradientStop Color="#D2ECF6" Offset="0.25" />
+                <GradientStop Color="#B2E1F5" Offset="0.75" />
+                <GradientStop Color="#E7F6FC" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
         <StackPanel Width="250" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
             <TextBlock Text="Email" 
                        FontSize="24" 

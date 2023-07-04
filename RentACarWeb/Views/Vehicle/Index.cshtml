@@ -4,28 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1 style="text-align:center">Browse Vehicles</h1>
+<hr />
 
 @using (Html.BeginForm("IndexSearch", "Vehicle", FormMethod.Get))
 {
     <div style="display:flex; justify-content:center;">
-       <div class="input-group mb-3" style="width:70%;">
+       <div class="input-group mb-3" style="width:60%;">
             <input type="text" class="form-control" name="search"/>
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </div>
+        </div>
+        <div class="input-group-append" style="padding-left: 10px">
+            <button class="btn btn-outline-info" type="submit">Search</button>
         </div>
    </div>
 }
 
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-md-center">
         @foreach(var item in Model) {
-            <div class="col-md-3">
+            <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card" style="margin-bottom: 22px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                     @if (item.PictureViewModels.Count > 0)
                     {
@@ -40,7 +37,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                         <p class="card-text">@Html.DisplayFor(modelItem => item.Price) €/Day</p>
-                        @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-primary"})
+                        @Html.ActionLink("Details", "Details", "Vehicle", new {vehicleId = item.Id}, new {@class = "btn btn-outline-dark"})
                     </div>
                 </div>
             </div>

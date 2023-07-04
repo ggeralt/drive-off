@@ -4,15 +4,22 @@
     ViewData["Title"] = "Reviews";
 }
 
-<h1>Reviews</h1>
+<h1 style="text-align:center">Reviews</h1>
 
+<hr />
+<div class="container">
+    <div class="row justify-content-md-center">
 @foreach (var item in Model)
 {
+   <div class="col-md-6 col-lg-4 mb-4">
     <div class="border border-dark rounded" style="margin-bottom: 30px">
         <div style="margin-left: 20px; margin-right: 20px;">
             @Html.DisplayFor(modelItem => item.User) <br>
             @Html.DisplayFor(modelItem => item.Description) <br>
-            @Html.ActionLink("Delete", "DeleteReview", "Vehicle", new { reviewId = item.Id}, new {@class = "btn btn-danger"})
+            @Html.ActionLink("Delete", "DeleteReview", "Vehicle", new { reviewId = item.Id}, new {@class = "btn btn-outline-danger"})
         </div>
     </div>
+   </div>
 }
+</div>
+</div>

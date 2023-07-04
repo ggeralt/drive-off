@@ -4,17 +4,17 @@
     ViewData["Title"] = "CreateReviews";
 }
 
-<h1>CreateReviews</h1>
+<h1 style="text-align:center">Create review</h1>
 
-<h4>ReviewViewModel</h4>
 <hr />
-<div class="row">
+<div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
     <div class="col-md-4">
+        <p>Please give us your feedback so that we may improve your user experience.</p>
         <form asp-action="CreateReviews">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+            <div class="form-group" style="padding-bottom:10px">
+                <!--input-->
+                <textarea asp-for="Description" class="form-control" placeholder="Your comment" rows="3"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -22,7 +22,7 @@
                 <span asp-validation-for="VehicleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>
@@ -34,10 +34,6 @@
         @ViewBag.message
     </div>
 }
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

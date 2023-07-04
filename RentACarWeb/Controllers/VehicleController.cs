@@ -64,7 +64,7 @@ namespace RentACarWeb.Controllers
                     return View(vehicleVewModel);
                 }
             }
-            return NotFound();
+            return NotFound("Vehicle not found or does not have a certificate. Please contact your administrator.");
 
         }
 
@@ -112,7 +112,7 @@ namespace RentACarWeb.Controllers
                     return View(vehicleVewModel);
                 }
             }
-            return NotFound();
+            return NotFound("Vehicle not found or does not have a certificate. Please contact your administrator.");
         }
 
         // POST: VehicleController/Edit/5

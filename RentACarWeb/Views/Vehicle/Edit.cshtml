@@ -19,8 +19,9 @@
 <body>
     <h1 style="text-align:center">Create new vehicle</h1>
     <hr />
-    <div class="row" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
-        <div class="col-md-4">
+    <div class="container-fluid">
+    <div class="row mt-4" style="display:flex; flex-direction:column; justify-items:center; align-items:center">
+        <div class="col-md-9">
             @using (Html.BeginForm("Edit", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -82,16 +83,21 @@
                             @Html.ActionLink("Delete", "DeletePicture", "Vehicle", new { pictureId = image.Id}, new { @class="btn btn-primary" })
                     }
                     }
+                  <div class="row justify-content-md-center">
                     <div id="map"></div>
                     <div class="form-group">
                         <input type="submit" value="Edit" class="btn btn-outline-warning" />
                     </div>
+                  </div>
                 }
         </div>
     </div>
+    </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
+    <div style="padding-top: 10px">
+    <button type="button" class="btn btn-info btn-lg">
+            <a asp-action="Index" style="color: white; text-decoration: none;">Back to List</a>
+    </button>
     </div>
 </body>
 

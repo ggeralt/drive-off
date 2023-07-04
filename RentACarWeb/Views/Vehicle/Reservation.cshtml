@@ -4,12 +4,11 @@
     ViewData["Title"] = "Reservation";
 }
 
-<h1>Reservation</h1>
+<h1 style="text-align:center">Reservations</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<hr />
+
+<table class="table table-responsive table-striped">
     <thead>
         <tr>
             <th>
@@ -43,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.Vehicle)
             </td>
             <td>
-                @Html.ActionLink("Delete", "DeleteReservation", "Vehicle", new {reservationId = item.Id}, new {@class = "btn btn-danger"})
+                    @Html.ActionLink("Delete", "DeleteReservation", "Vehicle", new {reservationId = item.Id}, new {@class = "btn btn-outline-secondary"})
             </td>
         </tr>
 }
