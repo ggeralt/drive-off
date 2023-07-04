@@ -31,7 +31,7 @@ namespace RentACarApi.Services
                 string userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 var user = await userManager.FindByIdAsync(userId.ToString());
-                if (user == null)
+                if (user == null || user.EmailConfirmed == false)
                 {
                     return new ManagerResponse
                     {
