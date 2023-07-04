@@ -73,15 +73,18 @@
                         <br />
                         <input class="form-control" type="file" id="Picture" accept="image/*" multiple name="files">
                     </div>
+                    
                     @if (Model.PictureViewModels.Count > 0)
                     {
+                        
                         foreach (var image in Model.PictureViewModels)
                         {
                             string base64 = Convert.ToBase64String(image.ImageData);
                             string imgsrc = "data:image/jpeg;base64," + base64;
-                            <img src="@imgsrc" width="300" height="200" alt="Image cap">
-                            @Html.ActionLink("Delete", "DeletePicture", "Vehicle", new { pictureId = image.Id}, new { @class="btn btn-primary" })
+                            <img src="@imgsrc" width="300" height="200" alt="Image cap" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px">
+                            @Html.ActionLink("Delete", "DeletePicture", "Vehicle", new { pictureId = image.Id}, new { @class="btn btn-outline-secondary" })
                     }
+                    
                     }
                   <div class="row justify-content-md-center">
                     <div id="map"></div>

@@ -14,9 +14,13 @@
    <div class="col-md-6 col-lg-4 mb-4">
     <div class="border border-dark rounded" style="margin-bottom: 30px">
         <div style="margin-left: 20px; margin-right: 20px;">
+            <div style="font-weight: 600">
             @Html.DisplayFor(modelItem => item.User) <br>
+            </div>
             @Html.DisplayFor(modelItem => item.Description) <br>
+                        <div style="padding-top: 5px; padding-bottom: 5px; text-align:right">
             @Html.ActionLink("Delete", "DeleteReview", "Vehicle", new { reviewId = item.Id}, new {@class = "btn btn-outline-danger"})
+            </div>
         </div>
     </div>
    </div>

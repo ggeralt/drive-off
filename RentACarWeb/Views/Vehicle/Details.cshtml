@@ -284,8 +284,10 @@
             </dd>
         </dl>
     </div>
-    <div id="map"></div>
-    <div>
+    <div class="row justify-content-md-center">
+      <div id="map"></div>
+    </div>
+    <div style="padding-bottom: 10px">
         @Html.ActionLink("Reserve", "Booking", "Vehicle", new { vehicleId = Model.Id}, new {@class = "btn btn-outline-success"})
         @Html.ActionLink("Reviews", "Reviews", "Vehicle", new { vehicleId = Model.Id}, new {@class = "btn btn-outline-success"})
         @Html.ActionLink("Add review", "CreateReviews", "Vehicle", new { vehicleId = Model.Id}, new {@class = "btn btn-outline-success"})
