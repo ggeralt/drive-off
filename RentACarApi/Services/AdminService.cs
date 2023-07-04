@@ -172,7 +172,8 @@ namespace RentACarApi.Services
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    IsEmailConfirmed = user.EmailConfirmed
                 };
                 userViewModels.Add(userViewModel);
             }

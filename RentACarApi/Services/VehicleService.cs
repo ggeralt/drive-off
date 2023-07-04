@@ -228,7 +228,7 @@ namespace RentACarApi.Services
             List<VehicleViewModel> vehicleViewModels = new List<VehicleViewModel>();
 
             var vehicles = await context.Vehicles.Include(v => v.Pictures).Where(
-                v => v.Title.Contains(searchValue) || v.Description.Contains(searchValue) || v.Type.Contains(searchValue) || v.Model.Contains(searchValue)).ToListAsync();
+                v => (v.Title.Contains(searchValue) || v.Description.Contains(searchValue) || v.Type.Contains(searchValue) || v.Model.Contains(searchValue)) && v.HasCertificate == true).ToListAsync();
 
             foreach (var vehicle in vehicles)
             {

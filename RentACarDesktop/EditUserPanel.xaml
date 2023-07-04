@@ -55,9 +55,6 @@
         <TextBlock Text="Email Confirmed:" FontSize="24" Grid.Row="3" Grid.Column="0"/>
         <TextBox x:Name="tbEmailConfirmed" Text="EmailConfirmed" FontSize="24"
                  Grid.Row="3" Grid.Column="1" IsReadOnly="True" />
-        <TextBlock Text="Has Driving Licence:" FontSize="24" Grid.Row="4" Grid.Column="0"/>
-        <TextBox x:Name="tbHasDrivingLicence" Text="HasDrivingLicence" FontSize="24"
-                 Grid.Row="4" Grid.Column="1" IsReadOnly="True" />
 
         <Button x:Name="btnDelete"
                 Grid.Row="5"

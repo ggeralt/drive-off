@@ -53,7 +53,7 @@ namespace RentACarApi.Controllers
 
             return Ok(result);
         }
-
+        
         [HttpGet("GetAllUsers"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -61,7 +61,7 @@ namespace RentACarApi.Controllers
 
             if (result == null)
             {
-                return NotFound("Failed to find vehicles");
+                return NotFound("Failed to find users");
             }
 
             return Ok(result);
