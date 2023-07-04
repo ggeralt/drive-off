@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using RentACarDesktop.Model;
+﻿using RentACarShared;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
 
 namespace RentACarDesktop
@@ -11,22 +9,21 @@ namespace RentACarDesktop
     /// </summary>
     public partial class EditUserPanel : Window
     {
-        private UserModel _userToEdit = new();
+        private UserViewModel _userToEdit = new();
 
-        public EditUserPanel(UserModel userToEdit)
+        public EditUserPanel(UserViewModel userToEdit)
         {
             InitializeComponent();
             _userToEdit = userToEdit;
-            LoadUser(_userToEdit);
+            LoadUser(userToEdit);
         }
 
-        private void LoadUser(UserModel userToEdit)
+        private void LoadUser(UserViewModel userToEdit)
         {
             tbId.Text = userToEdit.Id;
             tbUserName.Text = userToEdit.Username;
             tbEmail.Text = userToEdit.Email;
-            tbEmailConfirmed.Text = userToEdit.EmailConfirmed.ToString();
-            tbHasDrivingLicence.Text = userToEdit.HasDrivingLicence.ToString();
+            tbEmailConfirmed.Text = userToEdit.IsEmailConfirmed.ToString();
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -36,27 +33,6 @@ namespace RentACarDesktop
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             var response = await client.DeleteAsync($"https://localhost:7218/api/Admin/DeleteAccount?id={_userToEdit.Id}");
             this.Close();
-        }
-
-        private async void btnConfirmEmail_Click(object sender, RoutedEventArgs e)
-        {
-            _userToEdit.EmailConfirmed = true;
-
-            var client = new HttpClient();
-            string token = Application.Current.Properties["token"].ToString();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            var jsonData = JsonConvert.SerializeObject(_userToEdit);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await client.PutAsync($"https://localhost:7218/api/Auth/ConfirmEmail?userId={_userToEdit.Id}" + $"&token={token}", content);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                this.Close();
-            }
-            else
-            {
-                tbEmailConfirmed.Text = response.StatusCode.ToString();
-            }
         }
     }
 }

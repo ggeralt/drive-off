@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RentACarDesktop.Model;
 using RentACarShared;
 using System;
 using System.Collections.Generic;
@@ -34,14 +33,14 @@ namespace RentACarDesktop
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                List<UserModel>? users = JsonConvert.DeserializeObject<List<UserModel>>(json);
+                List<UserViewModel>? users = JsonConvert.DeserializeObject<List<UserViewModel>>(json);
                 lbUsers.ItemsSource = users;
             }
         }
 
         private void MouseDoubleClickToUpdateSelectedUser(object sender, MouseButtonEventArgs e)
         {
-            UserModel selectedUser = (UserModel)lbUsers.SelectedItem;
+            UserViewModel selectedUser = (UserViewModel)lbUsers.SelectedItem;
 
             if (selectedUser != null)
             {
