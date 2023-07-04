@@ -15,37 +15,55 @@
                 <GradientStop Color="#E7F6FC" Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
-        <StackPanel Width="250" Grid.Row="1" Orientation="Vertical" Margin="0,35,0,0">
-            <TextBlock Text="Email" 
-                       FontSize="24" 
-                       FontWeight="Medium" 
-                       Margin="0,35,0,0"/>
-            <TextBox x:Name="txtEmail" 
-                     FontSize="20" 
-                     FontWeight="Medium" 
-                     BorderThickness="2" 
-                     Height="28" 
-                     VerticalContentAlignment="Center" 
-                     Margin="0,5,0,0"/>
-            <TextBlock Text="Password" 
-                       FontSize="24" 
-                       FontWeight="Medium" 
-                       Margin="0,35,0,0"/>
-            <PasswordBox x:Name="txtPassword" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="1.8*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Email" 
+               FontSize="24" 
+               FontWeight="Medium" 
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="txtEmail" 
+                 FontSize="20" 
+                 FontWeight="Medium" 
+                 BorderThickness="2" 
+                 Height="28" 
+                 VerticalContentAlignment="Center" Grid.Row="1" Grid.Column="1"
+                     />
+        <Label Content="Password" 
+               FontSize="24" 
+               FontWeight="Medium" 
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+                       Grid.Row="2" Grid.Column="0"/>
+        <PasswordBox x:Name="txtPassword" 
                          FontSize="20" 
                          FontWeight="Medium" 
                          BorderThickness="2" 
                          Height="28" 
                          VerticalContentAlignment="Center" 
-                         Margin="0,5,0,0"/>
-            <Button x:Name="btnLogin" FontWeight="Bold" FontSize="24" BorderThickness="2" Content="LOG IN" Cursor="Hand" Margin="0,50,0,0" Click="btnLogin_ClickAsync"/>
-            <Label x:Name="txtStatus"
+                         Grid.Row="2" Grid.Column="1"/>
+        <Button x:Name="btnLogin" FontWeight="Bold" FontSize="24"
+                BorderThickness="2" Content="LOG IN" Cursor="Hand" 
+                Click="btnLogin_ClickAsync" Grid.Row="4" Grid.ColumnSpan="2"
+                Margin="80,10,80,10"/>
+        <Label x:Name="txtStatus"
                    Width="225" 
-                   Margin="0,8,0,0"
+                   Grid.Row="5"
+               Grid.ColumnSpan="2"
                    FontSize="16" 
                    HorizontalAlignment="Center" 
                    VerticalAlignment="Center" 
                    Foreground="Red"/>
-        </StackPanel>
     </Grid>
 </Window>
