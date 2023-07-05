@@ -17,11 +17,7 @@ namespace RentACarApi.Services
 
             if (picture == null)
             {
-                return new ManagerResponse
-                {
-                    Message = "Failed to fiend picture",
-                    IsSuccess = false
-                };
+                return null;
             }
             context.Pictures.Remove(picture);
 

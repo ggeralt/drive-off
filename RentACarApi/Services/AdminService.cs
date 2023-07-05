@@ -59,7 +59,7 @@ namespace RentACarApi.Services
 
             var vehicles = await context.Vehicles.Include(v => v.Pictures).Where(v => v.HasCertificate == false).ToListAsync();
 
-            if (vehicles == null)
+            if (vehicles.Count <= 0)
             {
                 return null;
             }
